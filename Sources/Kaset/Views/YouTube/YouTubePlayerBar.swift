@@ -27,6 +27,10 @@ struct YouTubePlayerBar: View {
     /// passes `videoOverlay` to reuse the exact same controls on the video.
     var mode: Mode = .docked
 
+    /// Reports volume-overlay presentation so a detached window can keep its
+    /// chrome visible while the slider is open (upstream #460).
+    var onVolumeOverlayChange: (Bool) -> Void = { _ in }
+
     @MainActor private static var brandAccent: Color { SettingsManager.shared.accentColor }
     private static let fullVideoDetailsWidth: CGFloat = 294
     private static let compactVideoDetailsWidth: CGFloat = 141
@@ -108,6 +112,7 @@ struct YouTubePlayerBar: View {
                 self.volumeValue = newValue
             }
         }
+        .onChange(of: self.showsVolumeOverlay) { _, isPresented in self.onVolumeOverlayChange(isPresented) }
         .onAppear {
             self.volumeValue = self.youtubePlayer.volume
             if self.youtubePlayer.duration > 0 {
@@ -566,6 +571,7 @@ struct YouTubePlayerBar: View {
             PlayerBarIconButton(
                 action: self.toggleYouTubeVolumeOverlay,
                 accessibilityLabel: String(localized: "Volume"),
+                accessibilityValue: "\(Int(self.displayedVolume * 100))%",
                 icon: {
                     Image(systemName: self.volumeIcon)
                         .font(.system(size: 15, weight: .regular))
@@ -574,13 +580,8 @@ struct YouTubePlayerBar: View {
                         .contentTransition(.symbolEffect(.replace))
                 }
             )
-            .overlay(alignment: .top) {
-                if self.showsVolumeOverlay {
-                    self.youtubeVolumeOverlay
-                        .offset(y: -176)
-                        .transition(.scale(scale: 0.94, anchor: .bottom).combined(with: .opacity))
-                        .zIndex(1)
-                }
+            .playerBarVolumeOverlay(isPresented: self.$showsVolumeOverlay) {
+                self.youtubeVolumeOverlay
             }
         }
     }
@@ -1136,20 +1137,24 @@ struct YouTubePlayerBar: View {
     }
 
     private var volumeIcon: String {
-        let currentVolume = self.isAdjustingVolume ? self.volumeValue : self.youtubePlayer.volume
-        if currentVolume == 0 {
-            return "speaker.slash.fill"
-        } else if currentVolume < 0.5 {
-            return "speaker.wave.1.fill"
+        if self.displayedVolume == 0 {
+            "speaker.slash.fill"
+        } else if self.displayedVolume < 0.5 {
+            "speaker.wave.1.fill"
         } else {
-            return "speaker.wave.2.fill"
+            "speaker.wave.2.fill"
         }
+    }
+
+    private var displayedVolume: Double {
+        self.isAdjustingVolume ? self.volumeValue : self.youtubePlayer.volume
     }
 
     private func toggleYouTubeVolumeOverlay() {
         HapticService.toggle()
+        let isPresented = !self.showsVolumeOverlay
         withAnimation(AppAnimation.quick) {
-            self.showsVolumeOverlay.toggle()
+            self.showsVolumeOverlay = isPresented
         }
     }
 

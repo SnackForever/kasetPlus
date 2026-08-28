@@ -382,6 +382,7 @@ private struct YouTubeVideoWindowContent: View {
 
     @State private var isHovering = false
     @State private var idleHideTask: Task<Void, Never>?
+    @State private var isVolumeOverlayPresented = false
 
     /// Height of the top strip that moves the window. Generous enough to be
     /// an easy grab target; the top of the video carries no YouTube controls
@@ -404,10 +405,14 @@ private struct YouTubeVideoWindowContent: View {
                     }
                     .animation(.easeInOut(duration: 0.25), value: self.youtubePlayer.autoplayPendingVideo == nil)
 
-                if self.isHovering {
+                if self.showsWindowChrome {
                     // The full player bar — same items as the main window.
-                    YouTubePlayerBar()
-                        .transition(.opacity)
+                    YouTubePlayerBar(
+                        onVolumeOverlayChange: { isPresented in
+                            self.isVolumeOverlayPresented = isPresented
+                        }
+                    )
+                    .transition(.opacity)
                 }
             }
 
@@ -421,7 +426,7 @@ private struct YouTubeVideoWindowContent: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: Self.dragStripHeight)
                 .overlay(alignment: .top) {
-                    if self.isHovering {
+                    if self.showsWindowChrome {
                         // Subtle grab affordance so the drag region is
                         // discoverable without cluttering the chrome-free look.
                         Capsule()
@@ -454,6 +459,17 @@ private struct YouTubeVideoWindowContent: View {
             }
         }
         .onDisappear { self.idleHideTask?.cancel() }
+        .onChange(of: self.isVolumeOverlayPresented) { _, isPresented in
+            if isPresented {
+                self.revealControls()
+            }
+        }
+    }
+
+    /// Chrome stays up while the volume slider is open, otherwise the overlay
+    /// would dismiss itself the moment the idle countdown fires (upstream #460).
+    private var showsWindowChrome: Bool {
+        self.isHovering || self.isVolumeOverlayPresented
     }
 
     private func revealControls() {
@@ -472,7 +488,7 @@ private struct YouTubeVideoWindowContent: View {
     private func hideControls() {
         // Don't hide while a control popover (Speed & Quality) is open — it would
         // dismiss the popover the moment the pointer moves onto it.
-        guard !self.youtubePlayer.isControlOverlayPinned else { return }
+        guard !self.youtubePlayer.isControlOverlayPinned, !self.isVolumeOverlayPresented else { return }
         self.idleHideTask?.cancel()
         withAnimation(.easeInOut(duration: 0.18)) { self.isHovering = false }
         YouTubeVideoWindowController.shared.setWindowChromeVisible(false)
