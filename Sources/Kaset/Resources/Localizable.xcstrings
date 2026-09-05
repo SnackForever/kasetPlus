@@ -76670,19 +76670,27 @@
     },
     "Keep Playing in the Player Bar When Navigating Away" : {
       "comment" : "Settings window → YouTube tab: navigate-away option that keeps the video playing docked in the bottom player bar with no pop-out window. Needs translation.",
-      "localizations" : {}
+      "localizations" : {
+
+      }
     },
     "Keep a playing video going, controlled from the bottom player bar, when you leave the page — with no floating pop-out window. Tap the thumbnail in the bar to return to the video." : {
       "comment" : "Help text for the keep-playing-in-player-bar navigate-away option. Needs translation.",
-      "localizations" : {}
+      "localizations" : {
+
+      }
     },
     "\"Keep Playing in the Player Bar\" takes precedence: the video keeps playing docked with no pop-out window, and you return to it from the bar. Otherwise, when \"Pop Out\" is off, navigating back from a playing video stops it. The pop-out and full-view buttons still work." : {
       "comment" : "Footer explaining precedence of the keep-playing vs pop-out navigate-away options. Needs translation.",
-      "localizations" : {}
+      "localizations" : {
+
+      }
     },
     "Return to video" : {
       "comment" : "Tooltip / accessibility label on the player-bar thumbnail that returns to the video kept playing docked. Needs translation.",
-      "localizations" : {}
+      "localizations" : {
+
+      }
     },
     "Pop Out Video When Navigating Away" : {
       "comment" : "Settings window → YouTube tab (YouTube video playback, ambient backdrop, SponsorBlock/DeArrow).",
@@ -123284,6 +123292,208 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Новий чат «Запитати Gemini» готовий"
+          }
+        }
+      }
+    },
+    "Ad" : {
+      "comment" : "Compact badge shown during an advertisement",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعلان"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Werbung"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anuncio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pub"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iklan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuncio"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "광고"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advertentie"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reklama"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anúncio"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Реклама"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annons"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reklam"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Реклама"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "广告"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "廣告"
+          }
+        }
+      }
+    },
+    "Advertisement" : {
+      "comment" : "Accessibility label for the player bar advertisement indicator",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعلان"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Werbung"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anuncio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publicité"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iklan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuncio"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "광고"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advertentie"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reklama"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anúncio"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Реклама"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annons"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reklam"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Реклама"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "广告"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "廣告"
           }
         }
       }

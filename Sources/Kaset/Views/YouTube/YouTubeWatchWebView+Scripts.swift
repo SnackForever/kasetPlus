@@ -46,6 +46,9 @@ extension YouTubeWatchWebView {
             var attachRetryTimeoutId = null;
             var attachDebounceTimeoutId = null;
             var videoObserver = null;
+            \(PlaybackAdDetectionScript.detection)
+            \(PlaybackAdDetectionScript.observation)
+            const refreshAdObserver = observeAdStateChanges(function() { sendUpdate(true); });
 
             function moviePlayer() {
                 return document.getElementById('movie_player');
@@ -72,11 +75,6 @@ extension YouTubeWatchWebView {
                 const data = videoData();
                 if (data && data.title) { return data.title; }
                 return document.title.replace(/ - YouTube$/, '');
-            }
-
-            function isAdShowing() {
-                const player = moviePlayer();
-                return !!(player && player.classList && player.classList.contains('ad-showing'));
             }
 
             // Whether YouTube's own "Skip" button is currently present — i.e. the
@@ -483,6 +481,7 @@ extension YouTubeWatchWebView {
             }
 
             function attach() {
+                refreshAdObserver();
                 disableAutonav();
                 const video = videoEl();
                 if (!video) { return false; }

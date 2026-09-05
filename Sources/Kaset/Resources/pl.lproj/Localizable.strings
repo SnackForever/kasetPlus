@@ -16,6 +16,7 @@
 "Account" = "Konto";
 "Acoustic" = "Akustyczne";
 "Active" = "Aktywne";
+"Ad" = "Reklama";
 "Ad Blocker" = "Bloker Reklam";
 "Add Extension…" = "Dodaj rozszerzenie…";
 "Add a WebKit-compatible extension to get started." = "Dodaj rozszerzenie zgodne z WebKit, aby rozpocząć.";
@@ -28,6 +29,7 @@
 "Add to Watch Later" = "Dodaj do Obejrzyj później";
 "Added to Library" = "Dodano do biblioteki";
 "Adds a third 'smart' state to the shuffle button that interleaves recommended tracks into your queue" = "Dodaje trzeci stan przycisku losowania, ten stan jest „smart” i służy do przeplatania polecanych utworów w twojej kolekcji";
+"Advertisement" = "Reklama";
 "AirPlay" = "AirPlay";
 "AirPlay Connected" = "Połączono z AirPlay";
 "Album" = "Album";

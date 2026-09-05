@@ -16,6 +16,7 @@
 "Account" = "Hesap";
 "Acoustic" = "Akustik";
 "Active" = "Etkin";
+"Ad" = "Reklam";
 "Ad Blocker" = "Ad Blocker";
 "Add Extension…" = "Uzantı ekle…";
 "Add a WebKit-compatible extension to get started." = "Başlamak için WebKit uyumlu bir uzantı ekleyin.";
@@ -28,6 +29,7 @@
 "Add to Watch Later" = "Daha Sonra İzle'ye ekle";
 "Added to Library" = "Kitaplığa Eklendi";
 "Adds a third 'smart' state to the shuffle button that interleaves recommended tracks into your queue" = "Karıştırma düğmesine, önerilen parçaları kuyruğunuza ekleyen üçüncü bir \"akıllı\" durum ekler";
+"Advertisement" = "Reklam";
 "AirPlay" = "AirPlay";
 "AirPlay Connected" = "AirPlay Bağlı";
 "Album" = "Albüm";

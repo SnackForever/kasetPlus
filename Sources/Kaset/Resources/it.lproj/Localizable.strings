@@ -16,6 +16,7 @@
 "Account" = "Account";
 "Acoustic" = "Acustico";
 "Active" = "Attivo";
+"Ad" = "Annuncio";
 "Ad Blocker" = "Ad Blocker";
 "Add Extension…" = "Aggiungi estensione…";
 "Add a WebKit-compatible extension to get started." = "Aggiungi un'estensione compatibile con WebKit per iniziare.";
@@ -28,6 +29,7 @@
 "Add to Watch Later" = "Aggiungi a guarda più tardi";
 "Added to Library" = "Aggiunto alla libreria";
 "Adds a third 'smart' state to the shuffle button that interleaves recommended tracks into your queue" = "Aggiunge un terzo stato 'intelligente' al pulsante Casuale che intreccia i brani consigliati nella tua coda";
+"Advertisement" = "Annuncio";
 "AirPlay" = "AirPlay";
 "AirPlay Connected" = "AirPlay connesso";
 "Album" = "Album";

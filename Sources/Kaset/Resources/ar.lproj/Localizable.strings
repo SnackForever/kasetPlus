@@ -16,6 +16,7 @@
 "Account" = "الحساب";
 "Acoustic" = "صوتي";
 "Active" = "نشط";
+"Ad" = "إعلان";
 "Ad Blocker" = "مانع الإعلانات";
 "Add Extension…" = "إضافة إضافة…";
 "Add a WebKit-compatible extension to get started." = "أضف إضافة متوافقة مع WebKit للبدء.";
@@ -28,6 +29,7 @@
 "Add to Watch Later" = "إضافة إلى المشاهدة لاحقًا";
 "Added to Library" = "تمت الإضافة إلى المكتبة";
 "Adds a third 'smart' state to the shuffle button that interleaves recommended tracks into your queue" = "يضيف حالة \"ذكية\" ثالثة إلى زر الخلط لإدراج المقطوعات المقترحة ضمن قائمة التشغيل";
+"Advertisement" = "إعلان";
 "AirPlay" = "أيربلاي";
 "AirPlay Connected" = "AirPlay متصل";
 "Album" = "ألبوم";

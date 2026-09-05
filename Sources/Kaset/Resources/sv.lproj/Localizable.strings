@@ -16,6 +16,7 @@
 "Account" = "Konto";
 "Acoustic" = "Akustisk";
 "Active" = "Aktiv";
+"Ad" = "Annons";
 "Ad Blocker" = "Annonsblockerare";
 "Add Extension…" = "Lägg till tillägg…";
 "Add a WebKit-compatible extension to get started." = "Lägg till ett WebKit-kompatibelt tillägg för att komma igång.";
@@ -28,6 +29,7 @@
 "Add to Watch Later" = "Lägg till i Titta senare";
 "Added to Library" = "Tillagd i biblioteket";
 "Adds a third 'smart' state to the shuffle button that interleaves recommended tracks into your queue" = "Lägger till ett tredje ”smart” läge på blandningsknappen som väver in rekommenderade spår i din kö";
+"Advertisement" = "Annons";
 "AirPlay" = "AirPlay";
 "AirPlay Connected" = "AirPlay ansluten";
 "Album" = "Album";

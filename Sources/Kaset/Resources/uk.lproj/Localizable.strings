@@ -16,6 +16,7 @@
 "Account" = "Обліковий запис";
 "Acoustic" = "Акустика";
 "Active" = "Активний";
+"Ad" = "Реклама";
 "Ad Blocker" = "Блокувальник реклами";
 "Add Extension…" = "Додати розширення…";
 "Add a WebKit-compatible extension to get started." = "Щоб почати, додайте розширення, сумісне з WebKit.";
@@ -28,6 +29,7 @@
 "Add to Watch Later" = "Додати до \"Переглянути пізніше\"";
 "Added to Library" = "Додано до бібліотеки";
 "Adds a third 'smart' state to the shuffle button that interleaves recommended tracks into your queue" = "Додає третій «розумний» стан кнопки перемішування, який чергує рекомендовані треки у вашій черзі";
+"Advertisement" = "Реклама";
 "AirPlay" = "Айранґ";
 "AirPlay Connected" = "AirPlay підключено";
 "Album" = "Альбом";

@@ -16,6 +16,7 @@
 "Account" = "Account";
 "Acoustic" = "Acoustic";
 "Active" = "Active";
+"Ad" = "廣告";
 "Ad Blocker" = "Ad Blocker";
 "Add Extension…" = "Add Extension…";
 "Add a WebKit-compatible extension to get started." = "Add a WebKit-compatible extension to get started.";
@@ -28,6 +29,7 @@
 "Add to Watch Later" = "Add to Watch Later";
 "Added to Library" = "Added to Library";
 "Adds a third 'smart' state to the shuffle button that interleaves recommended tracks into your queue" = "Adds a third 'smart' state to the shuffle button that interleaves recommended tracks into your queue";
+"Advertisement" = "廣告";
 "AirPlay" = "AirPlay";
 "AirPlay Connected" = "AirPlay Connected";
 "Album" = "Album";

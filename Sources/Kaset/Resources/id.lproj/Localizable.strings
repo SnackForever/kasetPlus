@@ -16,6 +16,7 @@
 "Account" = "Akun";
 "Acoustic" = "Akustik";
 "Active" = "Aktif";
+"Ad" = "Iklan";
 "Ad Blocker" = "Blokir Iklan";
 "Add Extension…" = "Tambahkan Ekstensi…";
 "Add a WebKit-compatible extension to get started." = "Tambahkan ekstensi yang kompatibel dengan WebKit untuk memulai.";
@@ -28,6 +29,7 @@
 "Add to Watch Later" = "Tambahkan ke Tonton Nanti";
 "Added to Library" = "Ditambahkan ke Pustaka";
 "Adds a third 'smart' state to the shuffle button that interleaves recommended tracks into your queue" = "Menambahkan status \"cerdas\" ketiga ke tombol acak yang menyisipkan trek rekomendasi ke antrean Anda";
+"Advertisement" = "Iklan";
 "AirPlay" = "AirPlay";
 "AirPlay Connected" = "AirPlay Terhubung";
 "Album" = "Album";

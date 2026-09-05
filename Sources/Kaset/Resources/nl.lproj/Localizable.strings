@@ -16,6 +16,7 @@
 "Account" = "Rekening";
 "Acoustic" = "Akoestisch";
 "Active" = "Actief";
+"Ad" = "Advertentie";
 "Ad Blocker" = "Ad Blocker";
 "Add Extension…" = "Extensie toevoegen…";
 "Add a WebKit-compatible extension to get started." = "Voeg een WebKit-compatibele extensie toe om aan de slag te gaan.";
@@ -28,6 +29,7 @@
 "Add to Watch Later" = "Toevoegen aan Later bekijken";
 "Added to Library" = "Toegevoegd aan bibliotheek";
 "Adds a third 'smart' state to the shuffle button that interleaves recommended tracks into your queue" = "Voegt een derde 'slimme' stand toe aan de shuffleknop die aanbevolen nummers tussen je wachtrij plaatst";
+"Advertisement" = "Advertentie";
 "AirPlay" = "AirPlay";
 "AirPlay Connected" = "AirPlay verbonden";
 "Album" = "Album";

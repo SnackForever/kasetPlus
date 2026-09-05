@@ -16,6 +16,7 @@
 "Account" = "Учетная запись";
 "Acoustic" = "Акустика";
 "Active" = "Активно";
+"Ad" = "Реклама";
 "Ad Blocker" = "Блокировщик рекламы";
 "Add Extension…" = "Добавить расширение…";
 "Add a WebKit-compatible extension to get started." = "Чтобы начать, добавьте расширение, совместимое с WebKit.";
@@ -28,6 +29,7 @@
 "Add to Watch Later" = "Добавить в \"Посмотреть позже\"";
 "Added to Library" = "Добавлено в медиатеку";
 "Adds a third 'smart' state to the shuffle button that interleaves recommended tracks into your queue" = "Добавляет третье «умное» состояние кнопке перемешивания, которое вставляет рекомендованные треки в вашу очередь";
+"Advertisement" = "Реклама";
 "AirPlay" = "AirPlay";
 "AirPlay Connected" = "AirPlay подключен";
 "Album" = "Альбом";

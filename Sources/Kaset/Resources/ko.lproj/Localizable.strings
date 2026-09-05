@@ -16,6 +16,7 @@
 "Account" = "계정";
 "Acoustic" = "어쿠스틱";
 "Active" = "동작 중";
+"Ad" = "광고";
 "Ad Blocker" = "Ad Blocker";
 "Add Extension…" = "확장 프로그램 추가…";
 "Add a WebKit-compatible extension to get started." = "시작하려면 WebKit 호환 확장 프로그램을 추가하세요.";
@@ -28,6 +29,7 @@
 "Add to Watch Later" = "나중에 볼 동영상에 추가";
 "Added to Library" = "보관함에 추가됨";
 "Adds a third 'smart' state to the shuffle button that interleaves recommended tracks into your queue" = "셔플 버튼에 추천 트랙을 대기열에 끼워 넣는 세 번째 '스마트' 상태를 추가합니다";
+"Advertisement" = "광고";
 "AirPlay" = "AirPlay";
 "AirPlay Connected" = "AirPlay 연결됨";
 "Album" = "앨범";

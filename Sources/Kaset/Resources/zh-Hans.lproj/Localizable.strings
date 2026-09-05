@@ -16,6 +16,7 @@
 "Account" = "账户";
 "Acoustic" = "音效";
 "Active" = "已启用";
+"Ad" = "广告";
 "Ad Blocker" = "广告屏蔽器";
 "Add Extension…" = "添加扩展…";
 "Add a WebKit-compatible extension to get started." = "添加一个 WebKit 兼容扩展以开始操作。";
@@ -28,6 +29,7 @@
 "Add to Watch Later" = "稍后添加到观察";
 "Added to Library" = "添加到书库";
 "Adds a third 'smart' state to the shuffle button that interleaves recommended tracks into your queue" = "将第三个“智能”状态添加到随机按钮，将推荐曲目交出到您的队列中";
+"Advertisement" = "广告";
 "AirPlay" = "AirPlay";
 "AirPlay Connected" = "AirPlay 已连接";
 "Album" = "相册";
