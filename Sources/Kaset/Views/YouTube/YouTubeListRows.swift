@@ -62,7 +62,7 @@ struct ChannelRowView: View {
             ) { image in
                 image
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .scaledToFill()
             } placeholder: {
                 Circle()
                     .fill(.quaternary)
@@ -121,7 +121,7 @@ struct YouTubePlaylistRowView: View {
                     ) { image in
                         image
                             .resizable()
-                            .aspectRatio(contentMode: .fill)
+                            .scaledToFill()
                     } placeholder: {
                         Rectangle()
                             .fill(.quaternary)
@@ -193,7 +193,7 @@ struct YouTubePlaylistCard: View {
                     ) { image in
                         image
                             .resizable()
-                            .aspectRatio(contentMode: .fill)
+                            .scaledToFill()
                     } placeholder: {
                         Rectangle()
                             .fill(.quaternary)

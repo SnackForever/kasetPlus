@@ -498,7 +498,7 @@ struct YouTubeWatchView: View {
                 ) { image in
                     image
                         .resizable()
-                        .aspectRatio(contentMode: .fill)
+                        .scaledToFill()
                 } placeholder: {
                     Rectangle().fill(.black)
                 }
@@ -628,7 +628,7 @@ struct YouTubeWatchView: View {
                 ) { image in
                     image
                         .resizable()
-                        .aspectRatio(contentMode: .fill)
+                        .scaledToFill()
                 } placeholder: {
                     Circle().fill(.quaternary)
                 }
@@ -2252,7 +2252,7 @@ private struct LiveChatRow: View {
         ) { image in
             image
                 .resizable()
-                .aspectRatio(contentMode: .fill)
+                .scaledToFill()
         } placeholder: {
             Circle()
                 .fill(.quaternary)
@@ -2393,7 +2393,7 @@ private struct CommentRow: View {
     @ViewBuilder private var creatorHeart: some View {
         ZStack(alignment: .bottomTrailing) {
             CachedAsyncImage(url: self.comment.creatorHeartAvatarURL, targetSize: CGSize(width: 16, height: 16)) { image in
-                image.resizable().aspectRatio(contentMode: .fill)
+                image.resizable().scaledToFill()
             } placeholder: {
                 Circle().fill(.quaternary)
             }
@@ -2431,7 +2431,7 @@ private struct CommentRow: View {
         ) { image in
             image
                 .resizable()
-                .aspectRatio(contentMode: .fill)
+                .scaledToFill()
         } placeholder: {
             Circle()
                 .fill(.quaternary)
@@ -2483,7 +2483,7 @@ private struct ChapterCard: View {
         ) { image in
             image
                 .resizable()
-                .aspectRatio(contentMode: .fill)
+                .scaledToFill()
         } placeholder: {
             Rectangle()
                 .fill(.quaternary)
@@ -2576,7 +2576,7 @@ private struct CollaboratorAvatarStack: View {
                 ) { image in
                     image
                         .resizable()
-                        .aspectRatio(contentMode: .fill)
+                        .scaledToFill()
                 } placeholder: {
                     Circle().fill(.quaternary)
                 }
@@ -2643,7 +2643,7 @@ private struct CollaboratorRow: View {
             ) { image in
                 image
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .scaledToFill()
             } placeholder: {
                 Circle().fill(.quaternary)
             }

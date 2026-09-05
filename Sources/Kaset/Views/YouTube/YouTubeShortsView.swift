@@ -331,7 +331,7 @@ private struct ShortPage: View {
         ) { image in
             image
                 .resizable()
-                .aspectRatio(contentMode: .fill)
+                .scaledToFill()
         } placeholder: {
             Rectangle()
                 .fill(.black)
@@ -538,7 +538,7 @@ private struct ShortsCommentRow: View {
                 url: self.comment.authorAvatarURL,
                 targetSize: CGSize(width: 32, height: 32)
             ) { image in
-                image.resizable().aspectRatio(contentMode: .fill)
+                image.resizable().scaledToFill()
             } placeholder: {
                 Circle().fill(.quaternary)
             }
