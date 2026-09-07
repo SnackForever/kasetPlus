@@ -2,17 +2,11 @@ import SwiftUI
 
 // MARK: - YouTubePlayerBar
 
-/// The Liquid Glass player bar, adapted for YouTube video playback.
+/// The Liquid Glass player bar for inline and detached YouTube playback.
 ///
-/// Shares the music `PlayerBar` layout and appears when a YouTube video is loaded.
-/// Differences per the YouTube content model:
-/// - No shuffle/repeat — left/right transport controls seek 30 seconds
-///   back/forward within the current video.
-/// - Center shows the video thumbnail, title, and channel · views.
-/// - No lyrics/queue buttons; chapter breaks appear in the progress bar when
-///   the watch page response exposes chapters.
-/// - The minimize button drives the video pop-out (picture in picture);
-///   the TV button toggles fullscreen on the popped-out window.
+/// Transport controls seek 30 seconds within the video. Chapter markers appear
+/// in the progress bar, and video controls manage captions, quality, AirPlay,
+/// picture in picture, and fullscreen.
 struct YouTubePlayerBar: View {
     /// Where these controls are shown.
     enum Mode {
@@ -82,6 +76,7 @@ struct YouTubePlayerBar: View {
     @State private var hoverPreviewFraction: Double?
     @State private var settings = SettingsManager.shared
     @State private var showsSpeedQualityPopover = false
+    @State private var airPlayAnchor = AirPlayPickerAnchor()
 
     var body: some View {
         self.content
@@ -659,7 +654,7 @@ struct YouTubePlayerBar: View {
         PlayerBarIconButton(
             action: {
                 HapticService.toggle()
-                self.youtubePlayer.showAirPlayPicker()
+                self.youtubePlayer.showAirPlayPicker(at: self.airPlayAnchor.screenPoint)
             },
             accessibilityLabel: String(localized: "AirPlay"),
             icon: {
@@ -669,6 +664,11 @@ struct YouTubePlayerBar: View {
                     .foregroundStyle(.primary)
             }
         )
+        .background {
+            AirPlayPickerAnchorView(anchor: self.airPlayAnchor)
+                .allowsHitTesting(false)
+                .accessibilityHidden(true)
+        }
         .disabled(self.youtubePlayer.currentVideo == nil)
     }
 
@@ -728,7 +728,7 @@ struct YouTubePlayerBar: View {
 
             Button {
                 HapticService.toggle()
-                self.youtubePlayer.showAirPlayPicker()
+                self.youtubePlayer.showAirPlayPicker(at: self.airPlayAnchor.screenPoint)
             } label: {
                 Label(String(localized: "AirPlay"), systemImage: "airplayvideo")
             }

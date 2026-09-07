@@ -30,7 +30,7 @@ protocol YouTubeWatchPlaybackControlling: AnyObject {
     func cancelPendingRecoverySeek()
     func markCurrentPlaybackOccurrenceEnded()
     func setVolume(_ volume: Double)
-    func showAirPlayPicker()
+    func showAirPlayPicker(at screenPoint: CGPoint?)
     func availableCaptionTracks() async -> [YouTubeCaptionTrack]
     func currentCaptionLanguageCode() async -> String?
     func setCaptionTrack(languageCode: String?)
@@ -1374,8 +1374,8 @@ final class YouTubePlayerService {
     // MARK: - AirPlay
 
     /// Shows the system AirPlay picker for the video element.
-    func showAirPlayPicker() {
-        self.playbackController.showAirPlayPicker()
+    func showAirPlayPicker(at screenPoint: CGPoint? = nil) {
+        self.playbackController.showAirPlayPicker(at: screenPoint)
     }
 
     // MARK: - Rating
