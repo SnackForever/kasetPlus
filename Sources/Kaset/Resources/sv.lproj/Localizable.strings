@@ -256,6 +256,7 @@
 "Jump to chapter: %@" = "Hoppa till kapitel: %@";
 "Jump to chapter: %arg" = "Hoppa till kapitel: %arg";
 "Jump to live" = "Hoppa till live";
+"Kaset could not read saved sign-in data. Retry to restore your session." = "Kaset kunde inte läsa sparade inloggningsdata. Försök igen för att återställa din session.";
 "Kaset could not remove saved sign-in data. Try signing out again before quitting." = "Kaset kunde inte ta bort sparade inloggningsdata. Försök logga ut igen innan du avslutar.";
 "Kaset could not safely clear saved sign-in data. Retry before signing in again." = "Kaset kunde inte rensa sparade inloggningsdata på ett säkert sätt. Försök igen innan du loggar in på nytt.";
 "KasetPlus" = "KasetPlus";
@@ -549,6 +550,7 @@
 "Sign in with GitHub to do that." = "Logga in med GitHub för att göra det.";
 "Sign in with Google" = "Logga in med Google";
 "Sign-In Cleanup Required" = "Inloggningsdata måste rensas";
+"Sign-In Temporarily Unavailable" = "Inloggning tillfälligt otillgänglig";
 "Signed in to YouTube" = "Inloggad på YouTube";
 "Singles & EPs" = "Singlar och EP";
 "Skip Forward/Backward" = "Hoppa framåt/bakåt";

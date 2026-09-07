@@ -256,6 +256,7 @@
 "Jump to chapter: %@" = "Ir al capítulo: %@";
 "Jump to chapter: %arg" = "Saltar al capítulo: %arg";
 "Jump to live" = "Saltar a vivo";
+"Kaset could not read saved sign-in data. Retry to restore your session." = "Kaset no pudo leer los datos de inicio de sesión guardados. Reinténtalo para restaurar tu sesión.";
 "Kaset could not remove saved sign-in data. Try signing out again before quitting." = "Kaset no pudo eliminar los datos de inicio de sesión guardados. Intenta cerrar sesión de nuevo antes de salir.";
 "Kaset could not safely clear saved sign-in data. Retry before signing in again." = "Kaset no pudo borrar de forma segura los datos de inicio de sesión guardados. Reinténtalo antes de volver a iniciar sesión.";
 "KasetPlus" = "KasetPlus";
@@ -549,6 +550,7 @@
 "Sign in with GitHub to do that." = "Inicia sesión con GitHub para hacer eso.";
 "Sign in with Google" = "Iniciar sesión con Google";
 "Sign-In Cleanup Required" = "Se requiere limpiar el inicio de sesión";
+"Sign-In Temporarily Unavailable" = "Inicio de sesión no disponible temporalmente";
 "Signed in to YouTube" = "Sesión iniciada en YouTube";
 "Singles & EPs" = "Sencillos y EPs";
 "Skip Forward/Backward" = "Saltar adelante/atrás";

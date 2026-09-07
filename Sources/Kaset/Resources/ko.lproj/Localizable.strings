@@ -256,6 +256,7 @@
 "Jump to chapter: %@" = "챕터로 이동: %@";
 "Jump to chapter: %arg" = "Jump to chapter: %arg";
 "Jump to live" = "Jump to live";
+"Kaset could not read saved sign-in data. Retry to restore your session." = "Kaset이 저장된 로그인 데이터를 읽지 못했습니다. 세션을 복원하려면 재시도하세요.";
 "Kaset could not remove saved sign-in data. Try signing out again before quitting." = "Kaset이 저장된 로그인 데이터를 제거하지 못했습니다. 앱을 종료하기 전에 다시 로그아웃해 보세요.";
 "Kaset could not safely clear saved sign-in data. Retry before signing in again." = "Kaset이 저장된 로그인 데이터를 안전하게 지우지 못했습니다. 다시 로그인하기 전에 재시도하세요.";
 "KasetPlus" = "KasetPlus";
@@ -549,6 +550,7 @@
 "Sign in with GitHub to do that." = "Sign in with GitHub to do that.";
 "Sign in with Google" = "Google로 로그인";
 "Sign-In Cleanup Required" = "로그인 정리 필요";
+"Sign-In Temporarily Unavailable" = "일시적으로 로그인할 수 없음";
 "Signed in to YouTube" = "YouTube에 로그인됨";
 "Singles & EPs" = "싱글 및 EP";
 "Skip Forward/Backward" = "앞으로/뒤로 건너뛰기";

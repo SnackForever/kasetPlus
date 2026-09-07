@@ -249,6 +249,7 @@
 "Jump to chapter: %@" = "Jump to chapter: %@";
 "Jump to chapter: %arg" = "Jump to chapter: %arg";
 "Jump to live" = "Jump to live";
+"Kaset could not read saved sign-in data. Retry to restore your session." = "Kaset 無法讀取已儲存的登入資料。請重試以還原工作階段。";
 "KasetPlus" = "KasetPlus";
 "KasetPlus can't access its own audio output. Open System Settings → Privacy & Security → Screen & System Audio Recording and enable KasetPlus, then toggle the equalizer on again." = "KasetPlus can't access its own audio output. Open System Settings → Privacy & Security → Screen & System Audio Recording and enable KasetPlus, then toggle the equalizer on again.";
 "KasetPlus creates fresh AI sessions per request. Refresh the status if Apple Intelligence finishes downloading or becomes available while the app is open." = "KasetPlus creates fresh AI sessions per request. Refresh the status if Apple Intelligence finishes downloading or becomes available while the app is open.";
@@ -531,6 +532,7 @@
 "Sign in to use %arg" = "Sign in to use %arg";
 "Sign in with GitHub to do that." = "Sign in with GitHub to do that.";
 "Sign in with Google" = "Sign in with Google";
+"Sign-In Temporarily Unavailable" = "暫時無法登入";
 "Signed in to YouTube" = "Signed in to YouTube";
 "Singles & EPs" = "Singles & EPs";
 "Skip Forward/Backward" = "Skip Forward/Backward";

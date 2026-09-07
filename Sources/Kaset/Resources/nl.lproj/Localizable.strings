@@ -256,6 +256,7 @@
 "Jump to chapter: %@" = "Ga naar hoofdstuk: %@";
 "Jump to chapter: %arg" = "Ga naar hoofdstuk: %arg";
 "Jump to live" = "Ga naar 'leven'";
+"Kaset could not read saved sign-in data. Retry to restore your session." = "Kaset kon de opgeslagen aanmeldgegevens niet lezen. Probeer het opnieuw om je sessie te herstellen.";
 "Kaset could not remove saved sign-in data. Try signing out again before quitting." = "Kaset kon de opgeslagen aanmeldgegevens niet verwijderen. Probeer opnieuw af te melden voordat je stopt.";
 "Kaset could not safely clear saved sign-in data. Retry before signing in again." = "Kaset kon de opgeslagen aanmeldgegevens niet veilig wissen. Probeer het opnieuw voordat je je weer aanmeldt.";
 "KasetPlus" = "KasetPlus";
@@ -549,6 +550,7 @@
 "Sign in with GitHub to do that." = "Log in met GitHub om dat te doen.";
 "Sign in with Google" = "Log in met Google";
 "Sign-In Cleanup Required" = "Aanmeldgegevens moeten worden opgeschoond";
+"Sign-In Temporarily Unavailable" = "Aanmelden tijdelijk niet beschikbaar";
 "Signed in to YouTube" = "Ingelogd bij YouTube";
 "Singles & EPs" = "Singles en EP's";
 "Skip Forward/Backward" = "Vooruit/achteruit springen";

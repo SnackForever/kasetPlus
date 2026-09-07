@@ -256,6 +256,7 @@
 "Jump to chapter: %@" = "Перейти до розділу: %@";
 "Jump to chapter: %arg" = "Перейти до глави: %arg";
 "Jump to live" = "Перейти на живий";
+"Kaset could not read saved sign-in data. Retry to restore your session." = "Kaset не вдалося прочитати збережені дані входу. Повторіть спробу, щоб відновити сеанс.";
 "Kaset could not remove saved sign-in data. Try signing out again before quitting." = "Kaset не вдалося видалити збережені дані входу. Спробуйте вийти ще раз перед завершенням роботи.";
 "Kaset could not safely clear saved sign-in data. Retry before signing in again." = "Kaset не вдалося безпечно видалити збережені дані входу. Повторіть спробу перед новим входом.";
 "KasetPlus" = "KasetPlus";
@@ -549,6 +550,7 @@
 "Sign in with GitHub to do that." = "Увійдіть за допомогою GitHub, щоб це зробити.";
 "Sign in with Google" = "Увійти через Google";
 "Sign-In Cleanup Required" = "Потрібне очищення даних входу";
+"Sign-In Temporarily Unavailable" = "Вхід тимчасово недоступний";
 "Signed in to YouTube" = "Увійшли в YouTube";
 "Singles & EPs" = "Сингли та EP";
 "Skip Forward/Backward" = "Перемотати вперед/назад";

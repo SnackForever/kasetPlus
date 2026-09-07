@@ -256,6 +256,7 @@
 "Jump to chapter: %@" = "Bölüme atla: %@";
 "Jump to chapter: %arg" = "Jump to chapter: %arg";
 "Jump to live" = "Jump to live";
+"Kaset could not read saved sign-in data. Retry to restore your session." = "Kaset kayıtlı oturum açma verilerini okuyamadı. Oturumunuzu geri yüklemek için tekrar deneyin.";
 "Kaset could not remove saved sign-in data. Try signing out again before quitting." = "Kaset kayıtlı oturum açma verilerini kaldıramadı. Uygulamadan çıkmadan önce yeniden çıkış yapmayı deneyin.";
 "Kaset could not safely clear saved sign-in data. Retry before signing in again." = "Kaset kayıtlı oturum açma verilerini güvenli bir şekilde temizleyemedi. Yeniden oturum açmadan önce tekrar deneyin.";
 "KasetPlus" = "KasetPlus";
@@ -549,6 +550,7 @@
 "Sign in with GitHub to do that." = "Sign in with GitHub to do that.";
 "Sign in with Google" = "Google ile giriş yap";
 "Sign-In Cleanup Required" = "Oturum Açma Temizliği Gerekli";
+"Sign-In Temporarily Unavailable" = "Oturum Açma Geçici Olarak Kullanılamıyor";
 "Signed in to YouTube" = "YouTube'da oturum açık";
 "Singles & EPs" = "Single'lar ve EP'ler";
 "Skip Forward/Backward" = "İleri/Geri Atla";

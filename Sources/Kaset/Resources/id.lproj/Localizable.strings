@@ -256,6 +256,7 @@
 "Jump to chapter: %@" = "Lompat ke bab: %@";
 "Jump to chapter: %arg" = "Lompat ke bagian: %a";
 "Jump to live" = "Buka siaran langsung";
+"Kaset could not read saved sign-in data. Retry to restore your session." = "Kaset tidak dapat membaca data masuk yang tersimpan. Coba lagi untuk memulihkan sesi Anda.";
 "Kaset could not remove saved sign-in data. Try signing out again before quitting." = "Kaset tidak dapat menghapus data masuk yang tersimpan. Coba keluar lagi sebelum menutup aplikasi.";
 "Kaset could not safely clear saved sign-in data. Retry before signing in again." = "Kaset tidak dapat menghapus data masuk yang tersimpan dengan aman. Coba lagi sebelum masuk kembali.";
 "KasetPlus" = "KasetPlus";
@@ -549,6 +550,7 @@
 "Sign in with GitHub to do that." = "Masuk dengan GitHub untuk melakukannya.";
 "Sign in with Google" = "Masuk dengan Google";
 "Sign-In Cleanup Required" = "Pembersihan proses masuk diperlukan";
+"Sign-In Temporarily Unavailable" = "Masuk sementara tidak tersedia";
 "Signed in to YouTube" = "Sudah masuk ke YouTube";
 "Singles & EPs" = "Single & EP";
 "Skip Forward/Backward" = "Lompat Maju/Mundur";
