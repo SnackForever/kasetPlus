@@ -495,6 +495,53 @@ func webClientConfiguration(authenticated: Bool, cookieSnapshot: [HTTPCookie]? =
     return configuration
 }
 
+/// Session for the one request that fetches the web client's config HTML.
+///
+/// In GDPR regions an unconsented GET of music.youtube.com 302s to
+/// consent.youtube.com, which the bounded loader refuses to follow (it only
+/// follows same-origin redirects) — the body arrives empty and every command
+/// dies with "Could not resolve YouTube Music API configuration". A consent
+/// cookie keeps the request on-origin. Scoped to this request so API calls keep
+/// sending exactly the cookies they were handed.
+func configurationFetchConfiguration(
+    authenticated: Bool,
+    cookieSnapshot: [HTTPCookie]? = nil
+) -> URLSessionConfiguration {
+    let configuration = webClientConfiguration(
+        authenticated: authenticated,
+        cookieSnapshot: cookieSnapshot
+    )
+    if let storage = configuration.httpCookieStorage,
+       !(storage.cookies ?? []).contains(where: { $0.name == ConsentCookie.name }),
+       let consent = ConsentCookie.make()
+    {
+        storage.setCookie(consent)
+        configuration.httpShouldSetCookies = true
+        configuration.httpCookieAcceptPolicy = .always
+    }
+    return configuration
+}
+
+/// Minimal "consent recorded" cookie. The value is what the web client sets
+/// after the consent interstitial; it carries no account information.
+///
+/// Deliberately a type member, not a top-level `let`: this is `main.swift`, so
+/// file-scope globals are initialized by top-level code that never runs when
+/// the module is loaded into the test bundle — reading one there crashes.
+enum ConsentCookie {
+    static let name = "SOCS"
+
+    static func make() -> HTTPCookie? {
+        HTTPCookie(properties: [
+            .name: Self.name,
+            .value: "CAI",
+            .domain: ".youtube.com",
+            .path: "/",
+            .secure: "TRUE",
+        ])
+    }
+}
+
 func resolveAPIKey(authenticated: Bool = false, cookieSnapshot: [HTTPCookie]? = nil) async throws -> String {
     if let cachedAPIKey {
         return cachedAPIKey
@@ -511,7 +558,7 @@ func resolveAPIKey(authenticated: Bool = false, cookieSnapshot: [HTTPCookie]? = 
 
     let request = webClientConfigurationRequest()
     let (data, response) = try await boundedResponseData(
-        configuration: webClientConfiguration(authenticated: authenticated, cookieSnapshot: cookieSnapshot),
+        configuration: configurationFetchConfiguration(authenticated: authenticated, cookieSnapshot: cookieSnapshot),
         request: request,
         maximumBytes: maximumConfigurationResponseBytes
     )
@@ -557,7 +604,7 @@ func resolveLiveClientVersionIfNeeded(authenticated: Bool = false, cookieSnapsho
     let response: URLResponse
     do {
         (data, response) = try await boundedResponseData(
-            configuration: webClientConfiguration(authenticated: authenticated, cookieSnapshot: cookieSnapshot),
+            configuration: configurationFetchConfiguration(authenticated: authenticated, cookieSnapshot: cookieSnapshot),
             request: request,
             maximumBytes: maximumConfigurationResponseBytes
         )
