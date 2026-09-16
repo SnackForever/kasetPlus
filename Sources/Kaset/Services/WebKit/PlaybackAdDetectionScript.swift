@@ -58,9 +58,35 @@ enum PlaybackAdDetectionScript {
             const adVideoId = window.__kasetAdVideoId || '';
             const video = document.querySelector('#movie_player video') || document.querySelector('video');
             const boundVideoId = video && video.__kasetBoundVideoId;
+            // Non-ad media, bound and settled on one id that is not the ad's.
+            // Between two creatives of the same pod this is momentary, so the
+            // wait below still bridges the gap; media that keeps playing well
+            // past that is content, even when it is a DIFFERENT track than the
+            // URL names. That last case is routine once YouTube Music's native
+            // queue advances without navigating (#248): the URL keeps naming
+            // the previous track, so comparing against it alone latched the ad
+            // flag on forever and wedged every `isShowingAd` gate behind it.
+            const contentCandidate = !isAd
+                && videoId !== ''
+                && videoId !== adVideoId
+                && (!boundVideoId || boundVideoId === videoId);
+            if (contentCandidate) {
+                if (window.__kasetAdContentCandidateId !== videoId) {
+                    window.__kasetAdContentCandidateId = videoId;
+                    window.__kasetAdContentCandidateAt = Date.now();
+                }
+            } else {
+                delete window.__kasetAdContentCandidateId;
+                delete window.__kasetAdContentCandidateAt;
+            }
+            const candidateAt = window.__kasetAdContentCandidateAt;
+            const contentSettled = contentCandidate
+                && typeof candidateAt === 'number'
+                && (Date.now() - candidateAt) > 5000;
             // An ad pod can change creatives while ad signals briefly clear.
             // Wait for the requested content's metadata and physical media.
             const awaitingContent = adVideoId !== ''
+                && !contentSettled
                 && adVideoId !== contentVideoId
                 && (videoId !== contentVideoId
                     || (!!boundVideoId && boundVideoId !== contentVideoId));
