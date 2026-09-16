@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import Kaset
+@testable import KasetPlus
 
 @Suite("Deferred restoration home preload", .serialized, .tags(.service))
 @MainActor

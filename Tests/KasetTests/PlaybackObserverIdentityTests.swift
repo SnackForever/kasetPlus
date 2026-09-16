@@ -2,7 +2,7 @@ import Foundation
 import JavaScriptCore
 import Testing
 import WebKit
-@testable import Kaset
+@testable import KasetPlus
 
 @Suite(.tags(.service))
 @MainActor

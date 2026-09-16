@@ -1,7 +1,7 @@
 import Foundation
 import JavaScriptCore
 import Testing
-@testable import Kaset
+@testable import KasetPlus
 
 extension PlayerServiceWebQueueSyncTests {
     @Test(

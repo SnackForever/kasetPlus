@@ -1,6 +1,6 @@
 import Observation
 import Testing
-@testable import Kaset
+@testable import KasetPlus
 
 @Suite("AuthService cookie restore recovery", .serialized, .tags(.service))
 @MainActor

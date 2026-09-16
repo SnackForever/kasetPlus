@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import Kaset
+@testable import KasetPlus
 
 /// Login transactions share the process-wide restore-policy generation with
 /// quarantine tests, so keep recovery cases in the same serialized suite.

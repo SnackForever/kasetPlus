@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import Kaset
+@testable import KasetPlus
 
 struct WebPlaybackNavigationMapTests {
     @Test("Expired cancellation cannot reject a new document navigation")

@@ -1,7 +1,7 @@
 import JavaScriptCore
 import Testing
 import WebKit
-@testable import Kaset
+@testable import KasetPlus
 
 // MARK: - AirPlayNavigationScriptTests
 

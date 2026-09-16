@@ -1,6 +1,6 @@
 import JavaScriptCore
 import Testing
-@testable import Kaset
+@testable import KasetPlus
 
 @Suite("Music audio output continuity", .tags(.service))
 @MainActor

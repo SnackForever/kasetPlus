@@ -1,6 +1,6 @@
 import JavaScriptCore
 import Testing
-@testable import Kaset
+@testable import KasetPlus
 
 @Suite("Playback ad detection", .tags(.service))
 @MainActor

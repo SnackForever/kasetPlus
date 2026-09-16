@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import Kaset
+@testable import KasetPlus
 
 extension PlayerServiceWebQueueSyncTests {
     @Test("Track end restarts a single-song queue when repeat all is enabled")

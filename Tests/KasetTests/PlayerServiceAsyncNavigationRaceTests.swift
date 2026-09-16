@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import Kaset
+@testable import KasetPlus
 
 extension PlayerServiceWebQueueSyncTests {
     @Test("Stale mix continuation cannot mutate a replacement queue or token")

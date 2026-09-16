@@ -2,7 +2,7 @@
 
 import Foundation
 import Testing
-@testable import Kaset
+@testable import KasetPlus
 
 extension PlayerServiceWebQueueSyncTests {
     @Test("Track-ended processing stops when its document generation is invalidated")

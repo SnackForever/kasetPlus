@@ -1,7 +1,7 @@
 import AppKit
 import Testing
 import WebKit
-@testable import Kaset
+@testable import KasetPlus
 
 // MARK: - AirPlayPickerTests
 

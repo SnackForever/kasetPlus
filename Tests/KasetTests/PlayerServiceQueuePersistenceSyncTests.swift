@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import Kaset
+@testable import KasetPlus
 
 extension PlayerServiceQueueTests {
     @Test("Unavailable cookie restoration preserves playback ownership until startup cleanup", arguments: [true, false], [true, false])
