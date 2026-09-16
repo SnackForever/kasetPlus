@@ -125,17 +125,22 @@ without a callable `pause` threw
 `TypeError: undefined is not an object (evaluating 'video.pause.bind')` and
 aborted the whole document-start attach.
 
-One failure is **new**: one of #248's `PlayerServiceEndedIdentityCoordinatorTests`
-cases fails only in a full-suite run and passes in isolation, and *which* case
-fails varies between runs. Instrumentation at the failure point showed every
-precondition correct (`repeat=.off`, `shuffle=off`, `canAdvance=true`,
-`injected="v2"`, `expectedNext=1`) with `injectedWebQueueVideoId` still set —
-i.e. `handleTrackEnded` returned before the handoff branch. The suite is
+One failure is new to the fork but **not ours**:
+`PlayerServiceEndedIdentityCoordinatorTests` /
+"The same-generation identity deadline resolves a pending handoff once" fails
+only in a full-suite run, passes in isolation, and **fails identically on a
+clean `upstream/main` checkout** (3390 tests, 22 issues, that one test) — it is
+upstream's own flake, shipped with #248.
+
+Instrumentation at the failure point showed every precondition correct
+(`repeat=.off`, `shuffle=off`, `canAdvance=true`, `injected="v2"`,
+`expectedNext=1`) with `injectedWebQueueVideoId` still set — i.e.
+`handleTrackEnded` returned before the handoff branch. The suite is
 `.serialized`, but **15 other suites** mutate the process-global
 `SingletonPlayerWebView.shared` (coordinator, `currentVideoId`,
 `documentGeneration`) and run in parallel with it. Fixing that needs a
-serialization group across those suites, which is a test-infrastructure change,
-not a sync change.
+serialization group across those suites — a test-infrastructure change, and
+one to raise upstream rather than carry here.
 
 Add a row **whenever a cherry-pick drops a hunk or an upstream commit is skipped
 on purpose** — the cost of a stale entry is one line; the cost of a mystery gap
