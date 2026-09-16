@@ -380,18 +380,43 @@ final class YouTubePlayerService {
 
         self.rydFetchVideoId = videoId
 
-        guard let url = URL(string: "https://returnyoutubedislikeapi.com/votes?videoId=\(videoId)") else {
+        guard var components = URLComponents(string: "https://returnyoutubedislikeapi.com/votes") else {
             return
         }
+        components.queryItems = [URLQueryItem(name: "videoId", value: videoId)]
+        guard let url = components.url else { return }
+
+        // The default 60s timeout is far too patient for an optional badge, and
+        // a network-level blocklist (this API is on several "tracker" lists, as
+        // is SponsorBlock's) makes the request fail or hang rather than 404.
+        var request = URLRequest(url: url)
+        request.timeoutInterval = 10
 
         do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else { return }
+            let (data, response) = try await URLSession.shared.data(for: request)
+            if let http = response as? HTTPURLResponse, !(200 ... 299).contains(http.statusCode) {
+                throw URLError(.badServerResponse)
+            }
+            guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                throw URLError(.cannotParseResponse)
+            }
             self.rydDislikes = json["dislikes"] as? Int
             self.rydLikes = json["likes"] as? Int
         } catch {
             self.rydDislikes = nil
             self.rydLikes = nil
+            // Let the next trigger try again: the old code marked the video as
+            // fetched before the request, so one failure killed the count for
+            // the rest of that video. And say why — a silently missing dislike
+            // count is indistinguishable from "this video has no dislikes".
+            self.rydFetchVideoId = nil
+            self.logger.error(
+                """
+                Return YouTube Dislike lookup failed for \(videoId): \(error.localizedDescription). \
+                If this persists, check whether returnyoutubedislikeapi.com is blocked by a \
+                network-level ad/tracker filter.
+                """
+            )
         }
     }
 
