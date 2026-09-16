@@ -521,7 +521,7 @@ extension YouTubeWatchWebView {
                 // playPause()), so real pauses are always honoured.
                 // ponytail: stack-string heuristic; revisit if YouTube renames the
                 // kevlar modules or changes the reconciliation-pause behaviour.
-                if (!video.__kNoKevlarPause) {
+                if (!video.__kNoKevlarPause && typeof video.pause === 'function') {
                     video.__kNoKevlarPause = true;
                     var _origPause = video.pause.bind(video);
                     video.pause = function() {
