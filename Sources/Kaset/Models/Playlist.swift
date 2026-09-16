@@ -199,6 +199,8 @@ struct PlaylistDetail: Identifiable {
     let canDelete: Bool
     let tracks: [Song]
     let duration: String?
+    /// Release year for albums, from the header subtitle (#37).
+    let year: String?
     let libraryTargetId: String?
 
     /// Whether this is an album (vs a playlist).
@@ -221,6 +223,7 @@ struct PlaylistDetail: Identifiable {
         playlist: Playlist,
         tracks: [Song],
         duration: String? = nil,
+        year: String? = nil,
         libraryTargetId: String? = nil
     ) {
         self.id = playlist.id
@@ -232,6 +235,7 @@ struct PlaylistDetail: Identifiable {
         self.canDelete = playlist.canDelete
         self.tracks = tracks
         self.duration = duration
+        self.year = year
         self.libraryTargetId = libraryTargetId ?? playlist.libraryTargetId
     }
 

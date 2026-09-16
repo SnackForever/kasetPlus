@@ -15,6 +15,10 @@ enum PlaylistParser {
         var author: Artist?
         var trackCount: Int?
         var duration: String?
+        /// Release year from the header subtitle ("Album • 2026"), shown on the
+        /// detail page (#37). The author filter deliberately skips this run, so
+        /// it has to be picked up separately.
+        var year: String?
     }
 
     typealias LibraryAlbumsSource = LibraryContentParser.LibraryAlbumsSource
@@ -88,6 +92,7 @@ enum PlaylistParser {
             playlist: playlist,
             tracks: tracks,
             duration: header.duration,
+            year: header.year,
             libraryTargetId: Self.extractAlbumLibraryTargetId(from: data, albumId: playlistId)
         )
     }
@@ -114,6 +119,7 @@ enum PlaylistParser {
             playlist: playlist,
             tracks: tracks,
             duration: header.duration,
+            year: header.year,
             libraryTargetId: Self.extractAlbumLibraryTargetId(from: data, albumId: playlistId)
         )
         let continuationToken = Self.extractPlaylistContinuationToken(from: data)
@@ -730,6 +736,7 @@ enum PlaylistParser {
         {
             header.author = header.author ?? Self.extractHeaderAuthor(from: runs)
             Self.applyMetadata(from: runs, to: &header)
+            header.year = header.year ?? Self.extractHeaderYear(from: runs)
         }
 
         if let secondSubtitleData = renderer["secondSubtitle"] as? [String: Any],
@@ -738,6 +745,22 @@ enum PlaylistParser {
             header.author = header.author ?? Self.extractHeaderAuthor(from: runs)
             Self.applyMetadata(from: runs, to: &header)
         }
+    }
+
+    /// A bare four-digit run in the header subtitle is the release year
+    /// ("Album • 2026"). Bounded so a stray number can't masquerade as one.
+    private static func extractHeaderYear(from runs: [[String: Any]]) -> String? {
+        for run in runs {
+            guard let text = (run["text"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+                  text.count == 4,
+                  let value = Int(text),
+                  (1900 ... 2200).contains(value)
+            else { continue }
+
+            return text
+        }
+
+        return nil
     }
 
     private static func extractHeaderAuthor(from runs: [[String: Any]]) -> Artist? {

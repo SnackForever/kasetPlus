@@ -29,6 +29,10 @@ struct PlaylistDetailView: View {
     @State private var isRefining: Bool = false
     /// Error message from refine operation.
     @State private var refineError: String?
+
+    /// Album/playlist descriptions can run long; show three lines and let a
+    /// click expand the rest (#37).
+    @State private var isDescriptionExpanded = false
     /// Computed property to check if playlist is in library.
     var isInLibrary: Bool {
         if self.playlist.isAlbum {
@@ -200,6 +204,23 @@ struct PlaylistDetailView: View {
                     .foregroundStyle(.secondary)
                     .padding(.top, 4)
 
+                if let description = detail.description?.trimmingCharacters(in: .whitespacesAndNewlines),
+                   !description.isEmpty
+                {
+                    Text(description)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(self.isDescriptionExpanded ? nil : 3)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .textSelection(.enabled)
+                        .onTapGesture {
+                            withAnimation(AppAnimation.quick) { self.isDescriptionExpanded.toggle() }
+                        }
+                        .help(self.isDescriptionExpanded
+                            ? String(localized: "Click to collapse")
+                            : String(localized: "Click to show the full description"))
+                }
+
                 Spacer(minLength: 24)
 
                 self.headerButtons(detail)
@@ -238,11 +259,15 @@ struct PlaylistDetailView: View {
     }
 
     private func metadataText(for detail: PlaylistDetail) -> String {
-        if let duration = detail.duration {
-            return "\(detail.trackCountDisplay) • \(duration)"
+        var parts: [String] = []
+        if let year = detail.year {
+            parts.append(year)
         }
-
-        return detail.trackCountDisplay
+        parts.append(detail.trackCountDisplay)
+        if let duration = detail.duration {
+            parts.append(duration)
+        }
+        return parts.joined(separator: " • ")
     }
 
     private func contentKindText(for detail: PlaylistDetail) -> String {

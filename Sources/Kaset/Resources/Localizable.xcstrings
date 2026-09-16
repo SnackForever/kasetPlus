@@ -123709,6 +123709,18 @@
           }
         }
       }
+    },
+    "Click to collapse" : {
+      "comment" : "Tooltip on an expanded album/playlist description. Needs translation.",
+      "localizations" : {
+
+      }
+    },
+    "Click to show the full description" : {
+      "comment" : "Tooltip on a truncated album/playlist description. Needs translation.",
+      "localizations" : {
+
+      }
     }
   },
   "version" : "1.1"
