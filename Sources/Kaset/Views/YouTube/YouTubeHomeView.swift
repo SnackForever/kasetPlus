@@ -7,7 +7,7 @@ struct YouTubeHomeView: View {
     let viewModel: YouTubeHomeViewModel
 
     private static let columns = [
-        GridItem(.adaptive(minimum: 210, maximum: 320), spacing: 16),
+        GridItem(.adaptive(minimum: 210, maximum: 320), spacing: 16, alignment: .top),
     ]
 
     var body: some View {

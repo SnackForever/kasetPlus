@@ -9,7 +9,7 @@ struct VideoCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            VideoThumbnailView(video: self.video)
+            VideoThumbnailView(video: self.video, showsStackCue: true)
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(self.displayTitle)
@@ -82,11 +82,19 @@ struct VideoThumbnailView: View {
     let video: YouTubeVideo
     var targetSize = CGSize(width: 320, height: 180)
 
+    /// Whether to give a Mix the playlist "stack" cue. Grid cards opt in; the
+    /// strip is reserved on every card there, so mixes and plain videos still
+    /// line up. Compact list rows and the watch rail leave it off.
+    var showsStackCue = false
+
     var body: some View {
-        // A Mix reads as the video's own 16:9 poster plus the "Mix" badge — no
-        // extra "stack" chrome, so mix cards stay the same size as video cards
-        // and line up in mixed rails/grids.
-        self.thumbnail
+        if self.showsStackCue {
+            // Reserved on every card, drawn only for mixes — see
+            // StackedPosterBackground for why skipping it breaks row alignment.
+            self.thumbnail.stackedPoster(isVisible: self.video.mixPlaylistId != nil)
+        } else {
+            self.thumbnail
+        }
     }
 
     private var thumbnail: some View {

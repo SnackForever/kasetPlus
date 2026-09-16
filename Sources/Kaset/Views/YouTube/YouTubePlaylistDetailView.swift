@@ -5,7 +5,7 @@ struct YouTubePlaylistDetailView: View {
     @State private var viewModel: YouTubePlaylistViewModel
 
     private static let columns = [
-        GridItem(.adaptive(minimum: 210, maximum: 320), spacing: 16),
+        GridItem(.adaptive(minimum: 210, maximum: 320), spacing: 16, alignment: .top),
     ]
 
     init(playlistId: String, client: any YouTubeClientProtocol) {

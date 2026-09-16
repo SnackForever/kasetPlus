@@ -41,7 +41,7 @@ struct YouTubeHistoryView: View {
     }
 
     private static let columns = [
-        GridItem(.adaptive(minimum: 210, maximum: 320), spacing: 16),
+        GridItem(.adaptive(minimum: 210, maximum: 320), spacing: 16, alignment: .top),
     ]
 
     private var historyList: some View {

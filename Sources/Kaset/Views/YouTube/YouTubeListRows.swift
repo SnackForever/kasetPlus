@@ -239,20 +239,30 @@ struct YouTubePlaylistCard: View {
     }
 }
 
-// MARK: - Stacked Poster (playlists)
+// MARK: - Stacked Poster (playlists and mixes)
 
-/// The layered "stack" cue for playlist posters: two cards peeking in a thin
-/// strip *above* the poster, like a stack of thumbnails. Only used on playlist
-/// grids/lists (uniform heights), not on mix video cards which live in mixed
-/// rails where the extra height would misalign them.
-private struct StackedPosterBackground: ViewModifier {
+/// The layered "stack" cue for playlist and mix posters: two cards peeking in a
+/// thin strip *above* the poster, like a stack of thumbnails.
+///
+/// The strip is **always reserved**, even when nothing is drawn in it. A card
+/// that skips the strip while its neighbours keep it starts its poster 7pt
+/// higher, and in a grid row that reads as broken alignment — which is why mix
+/// cards used to go without the cue entirely.
+struct StackedPosterBackground: ViewModifier {
+    /// Whether to draw the slivers. `false` still reserves their height.
+    var isVisible = true
+
+    static let sliverStripHeight: CGFloat = 7
+
     func body(content: Content) -> some View {
         VStack(spacing: 0) {
             ZStack(alignment: .bottom) {
-                self.sliver(inset: 18, height: 7, shade: 0.38)
-                self.sliver(inset: 9, height: 4, shade: 0.55)
+                if self.isVisible {
+                    self.sliver(inset: 18, height: 7, shade: 0.38)
+                    self.sliver(inset: 9, height: 4, shade: 0.55)
+                }
             }
-            .frame(height: 7)
+            .frame(height: Self.sliverStripHeight)
             content
         }
     }
@@ -267,7 +277,10 @@ private struct StackedPosterBackground: ViewModifier {
 
 extension View {
     /// Wraps a 16:9 poster in the playlist "stack" look (cards peeking above).
-    func stackedPoster() -> some View {
-        self.modifier(StackedPosterBackground())
+    ///
+    /// Pass `isVisible: false` to reserve the strip without drawing it, so cards
+    /// that have no stack still line up with those that do.
+    func stackedPoster(isVisible: Bool = true) -> some View {
+        self.modifier(StackedPosterBackground(isVisible: isVisible))
     }
 }
