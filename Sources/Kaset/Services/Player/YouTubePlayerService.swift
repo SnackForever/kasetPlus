@@ -342,10 +342,14 @@ final class YouTubePlayerService {
     /// back so playback stays controllable even with "controls on video" on.
     var inlineVideoOnScreen = false
 
-    /// Current playback speed (0.5, 0.75, 1.0, 1.25, 1.5, 2.0).
+    /// Current playback speed (continuous 0.25×–2×, see #32). Persisted and
+    /// re-applied to every new watch document, so it no longer reverts to 1x on
+    /// the next video (#36).
     var playbackSpeed: Double = 1.0 {
         didSet {
+            guard self.playbackSpeed != oldValue else { return }
             YouTubeWatchWebView.shared.setSpeed(self.playbackSpeed)
+            self.defaults.set(self.playbackSpeed, forKey: Self.playbackSpeedKey)
         }
     }
 
@@ -519,6 +523,14 @@ final class YouTubePlayerService {
     private let playbackLoadingTimeout: Duration
     private let logger = DiagnosticsLogger.player
 
+    /// Backing store for the settings this service persists itself (playback
+    /// speed). Injected so tests stay deterministic without touching global
+    /// `UserDefaults`.
+    private let defaults: UserDefaults
+
+    /// UserDefaults key for persisting playback speed.
+    static let playbackSpeedKey = "youtubePlaybackSpeed"
+
     /// Whether a playing video should pop out into the floating window when the
     /// inline watch view disappears (navigate-away). Read live so the user's
     /// setting takes effect mid-session; injected so tests stay deterministic
@@ -537,14 +549,25 @@ final class YouTubePlayerService {
         playbackController: (any YouTubeWatchPlaybackControlling)? = nil,
         shouldPopOutOnNavigateAway: @escaping @MainActor () -> Bool = { SettingsManager.shared.popOutVideoOnNavigateAway },
         shouldKeepPlayingOnNavigateAway: @escaping @MainActor () -> Bool = { SettingsManager.shared.keepPlayingVideoOnNavigateAway },
-        playbackLoadingTimeout: Duration = .seconds(15)
+        playbackLoadingTimeout: Duration = .seconds(15),
+        defaults: UserDefaults = .standard
     ) {
+        self.defaults = defaults
         self.webKitManager = webKitManager
         self.playbackController = playbackController ?? YouTubeWatchWebView.shared
         self.shouldPopOutOnNavigateAway = shouldPopOutOnNavigateAway
         self.shouldKeepPlayingOnNavigateAway = shouldKeepPlayingOnNavigateAway
         self.playbackLoadingTimeout = playbackLoadingTimeout
+        if let saved = defaults.object(forKey: Self.playbackSpeedKey) as? Double,
+           Self.supportedPlaybackSpeeds.contains(saved)
+        {
+            self.playbackSpeed = saved
+        }
     }
+
+    /// The speeds the player bar offers, and the only values restored from
+    /// disk — a corrupt or out-of-range default falls back to 1x.
+    static let supportedPlaybackSpeeds: ClosedRange<Double> = 0.25 ... 2.0
 
     // MARK: - Commands
 

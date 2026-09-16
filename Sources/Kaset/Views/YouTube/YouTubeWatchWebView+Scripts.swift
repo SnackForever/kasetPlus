@@ -305,6 +305,20 @@ extension YouTubeWatchWebView {
                 });
             }
 
+            // Re-apply the speed the user picked to every new document. YouTube
+            // starts each watch page at 1x, so without this the rate silently
+            // reverts on the next video (#36). Mirrors enforceVolume's
+            // window.__kasetTargetSpeed page global.
+            function enforceSpeed(video) {
+                const target = window.__kasetTargetSpeed;
+                if (typeof target !== 'number' || target <= 0) { return; }
+                const player = moviePlayer();
+                if (player && typeof player.setPlaybackRate === 'function') {
+                    try { player.setPlaybackRate(target); return; } catch (e) {}
+                }
+                if (video) { video.playbackRate = target; }
+            }
+
             function enforceVolume(video) {
                 if (typeof window.__kasetApplyTargetVolume === 'function') {
                     window.__kasetApplyTargetVolume(video);
@@ -443,6 +457,7 @@ extension YouTubeWatchWebView {
                 bindVideoIdentity(video, false);
                 armEndedOccurrence(video);
                 enforceVolume(video);
+                enforceSpeed(video);
                 sendUpdate(true);
             }
 
@@ -541,6 +556,7 @@ extension YouTubeWatchWebView {
                 });
 
                 enforceVolume(video);
+                enforceSpeed(video);
                 applyPendingSeek(video);
                 sendUpdate(true);
                 return true;
@@ -1094,6 +1110,7 @@ extension YouTubeWatchWebView {
         self.webView?.evaluateJavaScript(
             """
             (function() {
+                window.__kasetTargetSpeed = \(speed);
                 const mp = document.getElementById('movie_player');
                 if (mp && typeof mp.setPlaybackRate === 'function') {
                     mp.setPlaybackRate(\(speed));

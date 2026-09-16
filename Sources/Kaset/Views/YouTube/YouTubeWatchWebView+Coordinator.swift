@@ -330,10 +330,12 @@ extension YouTubeWatchWebView {
             YouTubeWatchWebView.shared.pendingSeek = nil
 
             let savedVolume = self.playerService.volume
+            let savedSpeed = self.playerService.playbackSpeed
             webView.evaluateJavaScript(
                 """
                 (function() {
                     window.__kasetTargetVolume = \(savedVolume);
+                    window.__kasetTargetSpeed = \(savedSpeed);
                     if (typeof window.__kasetApplyTargetVolumeToAllMedia === 'function') {
                         window.__kasetApplyTargetVolumeToAllMedia();
                     } else {
