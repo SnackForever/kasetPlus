@@ -101,11 +101,12 @@ enum DiscordPresenceActivity {
     /// comparable client does the same; th-ch/youtube-music, for instance,
     /// ships `export const clientId = '1177081335727267940'`.
     ///
-    /// Empty until the project registers its application at
-    /// https://discord.com/developers/applications — register it, name it
-    /// "KasetPlus", give it an icon, and paste the Application ID here. Until
-    /// then the Settings override is the only way to switch the feature on.
-    static let defaultApplicationID = ""
+    /// KasetPlus's registered application; Discord prints its name, "KasetPlus",
+    /// on the profile. Public identifier, safe in a public repo. (The
+    /// application's *public key* is only for verifying interaction webhooks —
+    /// slash commands and the like — which Rich Presence does not use, so it is
+    /// deliberately not stored anywhere in this repo.)
+    static let defaultApplicationID = "1550196014063943710"
 
     /// The ID actually used: a user override when given, otherwise the built-in
     /// one. Trimmed, because pasting from the portal often brings whitespace.
