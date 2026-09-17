@@ -123793,6 +123793,30 @@
       "localizations" : {
 
       }
+    },
+    "Application ID (optional)" : {
+      "comment" : "Label for the Discord Application ID override field. Needs translation.",
+      "localizations" : {
+
+      }
+    },
+    "Default" : {
+      "comment" : "Placeholder meaning the built-in Discord application is used. Needs translation.",
+      "localizations" : {
+
+      }
+    },
+    "Paste your Application ID" : {
+      "comment" : "Placeholder for the Discord Application ID field. Needs translation.",
+      "localizations" : {
+
+      }
+    },
+    "Publishes what you are playing to the Discord app running on this Mac, so your profile reads \"Listening to KasetPlus\". Leave the Application ID blank to use KasetPlus's own; set one to show a name of your choosing instead. Nothing is sent anywhere else, and the presence clears when playback stops." : {
+      "comment" : "Footer for Discord Rich Presence when a built-in application exists. Needs translation.",
+      "localizations" : {
+
+      }
     }
   },
   "version" : "1.1"

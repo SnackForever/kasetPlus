@@ -47,11 +47,18 @@ Two things had to be verified before committing to this:
    would defeat the change-detection above. Discord draws the progress bar from
    a start timestamp instead, derived as `now - elapsed` and rounded to a
    second so poll jitter is not mistaken for a seek.
-4. **The Application ID is a user setting with no default.** Discord displays
-   the name and icon of the application whose ID is supplied, so a shared
-   built-in ID would show one person's application name on everybody's profile,
-   and Kaset cannot register one on the user's behalf. Settings exposes the
-   field, a link to the developer portal, and a live status line.
+4. **One built-in Application ID, with a per-user override.** An earlier draft
+   of this ADR argued for no default, on the grounds that a shared ID puts one
+   application's name on everybody's profile. That is backwards: the ID is a
+   public identifier rather than a credential (comparable to a bundle ID), and
+   the application's name showing on every profile is precisely the branding
+   the feature exists to provide — "Listening to KasetPlus". Every comparable
+   client ships exactly one: th-ch/youtube-music, the closest analogue, has
+   `export const clientId = '1177081335727267940'`.
+   `DiscordPresenceActivity.defaultApplicationID` holds ours; the Settings
+   field overrides it for anyone who wants their own name. The constant is
+   empty until the project registers its application, and the feature stays
+   inert while it is, so nothing handshakes with a bogus ID.
 5. Music publishes as activity type 2 ("Listening to"), video as type 3
    ("Watching"), matching what each source actually is.
 

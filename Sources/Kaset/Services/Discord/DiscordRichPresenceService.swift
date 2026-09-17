@@ -60,9 +60,9 @@ final class DiscordRichPresenceService {
             self.stop(status: .disabled)
             return
         }
-        let applicationID = settings.discordApplicationID
-            .trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        guard DiscordPresenceActivity.isValidApplicationID(applicationID) else {
+        guard let applicationID = DiscordPresenceActivity
+            .effectiveApplicationID(override: settings.discordApplicationID)
+        else {
             self.stop(status: .needsApplicationID)
             return
         }
@@ -99,8 +99,7 @@ final class DiscordRichPresenceService {
 
     /// One poll. Returns how long to wait before the next one.
     private func tick() async -> Duration {
-        let applicationID = SettingsManager.shared.discordApplicationID
-            .trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        let applicationID = self.activeApplicationID ?? DiscordPresenceActivity.defaultApplicationID
 
         if !self.isConnected {
             do {

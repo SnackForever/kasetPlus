@@ -96,11 +96,19 @@ struct AddonsSettingsView: View {
                     .help("Show the track or video you are playing on your Discord profile.")
 
                 if self.settings.discordRichPresenceEnabled {
-                    LabeledContent("Application ID") {
+                    LabeledContent(
+                        DiscordPresenceActivity.hasDefaultApplicationID
+                            ? String(localized: "Application ID (optional)")
+                            : String(localized: "Application ID")
+                    ) {
                         TextField(
                             "",
                             text: self.$settings.discordApplicationID,
-                            prompt: Text(verbatim: "123456789012345678")
+                            prompt: Text(
+                                DiscordPresenceActivity.hasDefaultApplicationID
+                                    ? String(localized: "Default")
+                                    : String(localized: "Paste your Application ID")
+                            )
                         )
                         .textFieldStyle(.roundedBorder)
                         .frame(maxWidth: 220)
@@ -115,16 +123,20 @@ struct AddonsSettingsView: View {
                             .foregroundStyle(.secondary)
                     }
 
-                    Link(
-                        "Create an application on the Discord Developer Portal",
-                        destination: URL(string: "https://discord.com/developers/applications")!
-                    )
-                    .font(.caption)
+                    if !DiscordPresenceActivity.hasDefaultApplicationID {
+                        Link(
+                            "Create an application on the Discord Developer Portal",
+                            destination: URL(string: "https://discord.com/developers/applications")!
+                        )
+                        .font(.caption)
+                    }
                 }
             } header: {
                 Text("Discord Rich Presence")
             } footer: {
-                Text("Publishes what you are playing to the Discord app running on this Mac. Discord shows the name and icon of the application whose ID you paste here, so create one named however you want your profile to read — no bot, no permissions and no sign-in needed, just the Application ID from its General Information page. Nothing is sent anywhere else, and the presence clears when playback stops.")
+                Text(DiscordPresenceActivity.hasDefaultApplicationID
+                    ? String(localized: "Publishes what you are playing to the Discord app running on this Mac, so your profile reads \"Listening to KasetPlus\". Leave the Application ID blank to use KasetPlus's own; set one to show a name of your choosing instead. Nothing is sent anywhere else, and the presence clears when playback stops.")
+                    : String(localized: "Publishes what you are playing to the Discord app running on this Mac. Discord shows the name and icon of the application whose ID you paste here, so create one named however you want your profile to read — no bot, no permissions and no sign-in needed, just the Application ID from its General Information page. Nothing is sent anywhere else, and the presence clears when playback stops."))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

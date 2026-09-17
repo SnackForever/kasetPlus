@@ -93,6 +93,35 @@ enum DiscordPresenceActivity {
         return truncated + ellipsis
     }
 
+    /// KasetPlus's own Discord application, shared by every user — this is how
+    /// Discord presence is meant to work. The ID is a public identifier, not a
+    /// credential (comparable to a bundle ID), and the application's name is
+    /// what Discord prints on the profile, so a shared one is exactly what puts
+    /// "KasetPlus" there rather than each user's own invented name. Every
+    /// comparable client does the same; th-ch/youtube-music, for instance,
+    /// ships `export const clientId = '1177081335727267940'`.
+    ///
+    /// Empty until the project registers its application at
+    /// https://discord.com/developers/applications — register it, name it
+    /// "KasetPlus", give it an icon, and paste the Application ID here. Until
+    /// then the Settings override is the only way to switch the feature on.
+    static let defaultApplicationID = ""
+
+    /// The ID actually used: a user override when given, otherwise the built-in
+    /// one. Trimmed, because pasting from the portal often brings whitespace.
+    static func effectiveApplicationID(override: String) -> String? {
+        let trimmed = override.trimmingCharacters(in: .whitespacesAndNewlines)
+        if Self.isValidApplicationID(trimmed) { return trimmed }
+        guard trimmed.isEmpty, Self.isValidApplicationID(Self.defaultApplicationID) else { return nil }
+        return Self.defaultApplicationID
+    }
+
+    /// Whether a built-in application exists, i.e. whether the Settings field is
+    /// an optional override or the only way to make the feature work.
+    static var hasDefaultApplicationID: Bool {
+        Self.isValidApplicationID(Self.defaultApplicationID)
+    }
+
     /// A Discord Application ID is a snowflake: 17-20 digits.
     static func isValidApplicationID(_ value: String) -> Bool {
         let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
