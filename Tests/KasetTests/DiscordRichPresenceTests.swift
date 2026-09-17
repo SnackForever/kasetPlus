@@ -154,42 +154,12 @@ struct DiscordRichPresenceTests {
         #expect(!DiscordPresenceActivity.isValidApplicationID(value))
     }
 
-    @Test("A user override wins over the built-in application")
-    func overrideWinsOverDefault() {
-        #expect(DiscordPresenceActivity.effectiveApplicationID(override: "123456789012345678")
-            == "123456789012345678")
-        // Pasting from the portal routinely brings whitespace along.
-        #expect(DiscordPresenceActivity.effectiveApplicationID(override: "  123456789012345678\n")
-            == "123456789012345678")
-    }
-
-    @Test("A blank override falls back to the built-in application, if there is one")
-    func blankOverrideUsesDefault() {
-        let effective = DiscordPresenceActivity.effectiveApplicationID(override: "   ")
-
-        if DiscordPresenceActivity.hasDefaultApplicationID {
-            #expect(effective == DiscordPresenceActivity.defaultApplicationID)
-        } else {
-            // No application registered for the project yet: the feature stays
-            // inert rather than handshaking with a bogus ID.
-            #expect(effective == nil)
-        }
-    }
-
-    @Test("A malformed override never silently falls back to the built-in one")
-    func malformedOverrideIsNotIgnored() {
-        // Falling back here would connect as KasetPlus while the user believes
-        // they are using their own application — confusing, and it hides typos.
-        #expect(DiscordPresenceActivity.effectiveApplicationID(override: "not-an-id") == nil)
-        #expect(DiscordPresenceActivity.effectiveApplicationID(override: "1234") == nil)
-    }
-
-    @Test("The built-in application ID, when set, is a valid snowflake")
+    @Test("The shipped application ID is a well-formed snowflake")
     func defaultApplicationIDIsWellFormed() {
-        // Guards the one-line edit that lands the real ID: a typo there would
-        // otherwise only show up as a silent handshake rejection at runtime.
-        let value = DiscordPresenceActivity.defaultApplicationID
-        #expect(value.isEmpty || DiscordPresenceActivity.isValidApplicationID(value))
+        // The only thing standing between a typo in that constant and a build
+        // whose Rich Presence silently never connects.
+        #expect(DiscordPresenceActivity.isValidApplicationID(DiscordPresenceActivity.defaultApplicationID))
+        #expect(DiscordPresenceActivity.defaultApplicationID == "1550196014063943710")
     }
 
     // MARK: - Snapshot throttling

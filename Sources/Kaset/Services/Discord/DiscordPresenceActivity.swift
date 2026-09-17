@@ -108,21 +108,6 @@ enum DiscordPresenceActivity {
     /// deliberately not stored anywhere in this repo.)
     static let defaultApplicationID = "1550196014063943710"
 
-    /// The ID actually used: a user override when given, otherwise the built-in
-    /// one. Trimmed, because pasting from the portal often brings whitespace.
-    static func effectiveApplicationID(override: String) -> String? {
-        let trimmed = override.trimmingCharacters(in: .whitespacesAndNewlines)
-        if Self.isValidApplicationID(trimmed) { return trimmed }
-        guard trimmed.isEmpty, Self.isValidApplicationID(Self.defaultApplicationID) else { return nil }
-        return Self.defaultApplicationID
-    }
-
-    /// Whether a built-in application exists, i.e. whether the Settings field is
-    /// an optional override or the only way to make the feature work.
-    static var hasDefaultApplicationID: Bool {
-        Self.isValidApplicationID(Self.defaultApplicationID)
-    }
-
     /// A Discord Application ID is a snowflake: 17-20 digits.
     static func isValidApplicationID(_ value: String) -> Bool {
         let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)

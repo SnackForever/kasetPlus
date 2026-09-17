@@ -47,27 +47,34 @@ Two things had to be verified before committing to this:
    would defeat the change-detection above. Discord draws the progress bar from
    a start timestamp instead, derived as `now - elapsed` and rounded to a
    second so poll jitter is not mistaken for a seek.
-4. **One built-in Application ID, with a per-user override.** An earlier draft
-   of this ADR argued for no default, on the grounds that a shared ID puts one
+4. **One built-in Application ID, and no way to change it.** An earlier draft
+   argued for no default at all, on the grounds that a shared ID puts one
    application's name on everybody's profile. That is backwards: the ID is a
    public identifier rather than a credential (comparable to a bundle ID), and
    the application's name showing on every profile is precisely the branding
    the feature exists to provide — "Listening to KasetPlus". Every comparable
    client ships exactly one: th-ch/youtube-music, the closest analogue, has
-   `export const clientId = '1177081335727267940'`.
-   `DiscordPresenceActivity.defaultApplicationID` holds ours; the Settings
-   field overrides it for anyone who wants their own name. The constant is
-   empty until the project registers its application, and the feature stays
-   inert while it is, so nothing handshakes with a bogus ID.
+   `export const clientId = '1177081335727267940'` — itself an unverified
+   application merely *named* "YouTube Music", since no official Google one
+   exists. KasetPlus's is `1550196014063943710`.
+
+   A per-user override field was built and then removed: it was a text box
+   that every user had to understand and almost none would ever change, and a
+   wrong value there produces a feature that silently fails to connect. The
+   setting is now one toggle. Discord accepts any existing application ID
+   regardless of who owns it, so an override was never a security boundary
+   either — only an invitation to misconfigure.
 5. Music publishes as activity type 2 ("Listening to"), video as type 3
    ("Watching"), matching what each source actually is.
 
 ## Consequences
 
-- The feature is off by default and inert until an Application ID is pasted, so
-  nobody's presence changes without an explicit opt-in.
-- A wrong Application ID fails identically on every retry, so the service stops
-  and reports `rejected` rather than reconnecting forever. Discord not running
+- The feature is off by default; enabling the toggle is the whole setup, and
+  nobody's presence changes without that explicit opt-in.
+- A rejected handshake fails identically on every retry, so the service stops
+  and reports `rejected` rather than reconnecting forever. With the ID fixed at
+  build time this should now be unreachable; a test pins the constant so a typo
+  fails the suite instead of shipping as a presence that never appears. Discord not running
   is retried every 30 seconds instead of every 5.
 - Field clamping matters more than it looks: Discord silently drops an entire
   activity when `details` or `state` falls outside 2–128 **bytes**. A unit test

@@ -17,7 +17,6 @@ final class DiscordRichPresenceService {
     /// visible instead of the presence just never appearing.
     enum Status: Equatable {
         case disabled
-        case needsApplicationID
         case waitingForDiscord
         case connected
         case rejected(String)
@@ -60,10 +59,11 @@ final class DiscordRichPresenceService {
             self.stop(status: .disabled)
             return
         }
-        guard let applicationID = DiscordPresenceActivity
-            .effectiveApplicationID(override: settings.discordApplicationID)
-        else {
-            self.stop(status: .needsApplicationID)
+        // A build whose application ID constant is broken simply stays off; the
+        // suite pins that constant so it cannot ship that way.
+        let applicationID = DiscordPresenceActivity.defaultApplicationID
+        guard DiscordPresenceActivity.isValidApplicationID(applicationID) else {
+            self.stop(status: .disabled)
             return
         }
         if self.pollTask != nil {

@@ -368,9 +368,6 @@ struct KasetApp: App {
                 .onChange(of: self.settings.discordRichPresenceEnabled) { _, _ in
                     DiscordRichPresenceService.shared.refreshEnablement()
                 }
-                .onChange(of: self.settings.discordApplicationID) { _, _ in
-                    DiscordRichPresenceService.shared.refreshEnablement()
-                }
                 .onChange(of: NetworkMonitor.shared.isConnected) { _, isConnected in
                     // Auto-retry (issue #19): when connectivity returns, revive a
                     // video that stalled during the outage instead of leaving it stuck.

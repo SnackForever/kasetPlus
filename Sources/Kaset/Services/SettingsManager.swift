@@ -45,7 +45,6 @@ final class SettingsManager {
         static let returnYouTubeDislikesEnabled = "settings.ryd.enabled"
         static let dearrowEnabled = "settings.dearrow.enabled"
         static let discordRichPresenceEnabled = "settings.discord.richPresence.enabled"
-        static let discordApplicationID = "settings.discord.applicationID"
         static let hasCompletedInitialOnboarding = "settings.onboarding.completed"
         static let distractionFreeEnabled = "settings.distractionFree.enabled"
         static let youtubeAutoplayEnabled = "settings.youtube.autoplay.enabled"
@@ -615,15 +614,6 @@ final class SettingsManager {
         }
     }
 
-    /// Discord Application ID used for Rich Presence. Discord shows this
-    /// application's name and artwork, so it has to be one the user registered;
-    /// there is no shared default that could work for everyone.
-    var discordApplicationID: String {
-        didSet {
-            UserDefaults.standard.set(self.discordApplicationID, forKey: Keys.discordApplicationID)
-        }
-    }
-
     /// Whether DeArrow is enabled. Replaces clickbait video titles with
     /// community-submitted accurate titles from the DeArrow API.
     var dearrowEnabled: Bool {
@@ -747,7 +737,6 @@ final class SettingsManager {
         self.returnYouTubeDislikesEnabled = UserDefaults.standard.object(forKey: Keys.returnYouTubeDislikesEnabled) as? Bool ?? false
         self.dearrowEnabled = UserDefaults.standard.object(forKey: Keys.dearrowEnabled) as? Bool ?? false
         self.discordRichPresenceEnabled = UserDefaults.standard.object(forKey: Keys.discordRichPresenceEnabled) as? Bool ?? false
-        self.discordApplicationID = UserDefaults.standard.object(forKey: Keys.discordApplicationID) as? String ?? ""
         self.hasCompletedInitialOnboarding = UserDefaults.standard.object(forKey: Keys.hasCompletedInitialOnboarding) as? Bool ?? false
         self.distractionFreeEnabled = UserDefaults.standard.object(forKey: Keys.distractionFreeEnabled) as? Bool ?? false
         self.youtubeAutoplayEnabled = UserDefaults.standard.object(forKey: Keys.youtubeAutoplayEnabled) as? Bool ?? false
