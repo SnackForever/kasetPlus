@@ -123721,6 +123721,78 @@
       "localizations" : {
 
       }
+    },
+    "Enable Discord Rich Presence" : {
+      "comment" : "Settings toggle for Discord Rich Presence. Needs translation.",
+      "localizations" : {
+
+      }
+    },
+    "Discord Rich Presence" : {
+      "comment" : "Settings section title for Discord Rich Presence. Needs translation.",
+      "localizations" : {
+
+      }
+    },
+    "Application ID" : {
+      "comment" : "Label for the Discord Application ID field. Needs translation.",
+      "localizations" : {
+
+      }
+    },
+    "Create an application on the Discord Developer Portal" : {
+      "comment" : "Link to the Discord developer portal. Needs translation.",
+      "localizations" : {
+
+      }
+    },
+    "Show the track or video you are playing on your Discord profile." : {
+      "comment" : "Help text for the Discord Rich Presence toggle. Needs translation.",
+      "localizations" : {
+
+      }
+    },
+    "Publishes what you are playing to the Discord app running on this Mac. Discord shows the name and icon of the application whose ID you paste here, so create one named however you want your profile to read — no bot, no permissions and no sign-in needed, just the Application ID from its General Information page. Nothing is sent anywhere else, and the presence clears when playback stops." : {
+      "comment" : "Footer explaining Discord Rich Presence setup. Needs translation.",
+      "localizations" : {
+
+      }
+    },
+    "Paste the Application ID of a Discord application you created." : {
+      "comment" : "Discord Rich Presence status: no application ID yet. Needs translation.",
+      "localizations" : {
+
+      }
+    },
+    "Waiting for Discord to be running on this Mac." : {
+      "comment" : "Discord Rich Presence status: Discord not running. Needs translation.",
+      "localizations" : {
+
+      }
+    },
+    "Connected to Discord." : {
+      "comment" : "Discord Rich Presence status: connected. Needs translation.",
+      "localizations" : {
+
+      }
+    },
+    "Discord refused the connection: %@" : {
+      "comment" : "Discord Rich Presence status: handshake rejected. Needs translation.",
+      "localizations" : {
+
+      }
+    },
+    "Could not reach Discord: %@" : {
+      "comment" : "Discord Rich Presence status: transport failure. Needs translation.",
+      "localizations" : {
+
+      }
+    },
+    "Paused" : {
+      "comment" : "Discord presence hover text shown while playback is paused. Needs translation.",
+      "localizations" : {
+
+      }
     }
   },
   "version" : "1.1"

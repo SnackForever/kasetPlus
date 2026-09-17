@@ -88,7 +88,82 @@ struct AddonsSettingsView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+
+            // MARK: - Discord Rich Presence
+
+            Section {
+                Toggle("Enable Discord Rich Presence", isOn: self.$settings.discordRichPresenceEnabled)
+                    .help("Show the track or video you are playing on your Discord profile.")
+
+                if self.settings.discordRichPresenceEnabled {
+                    LabeledContent("Application ID") {
+                        TextField(
+                            "",
+                            text: self.$settings.discordApplicationID,
+                            prompt: Text(verbatim: "123456789012345678")
+                        )
+                        .textFieldStyle(.roundedBorder)
+                        .frame(maxWidth: 220)
+                        .font(.body.monospacedDigit())
+                    }
+
+                    HStack(spacing: 6) {
+                        Image(systemName: self.discordStatusIcon)
+                            .foregroundStyle(self.discordStatusColor)
+                        Text(self.discordStatusText)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    Link(
+                        "Create an application on the Discord Developer Portal",
+                        destination: URL(string: "https://discord.com/developers/applications")!
+                    )
+                    .font(.caption)
+                }
+            } header: {
+                Text("Discord Rich Presence")
+            } footer: {
+                Text("Publishes what you are playing to the Discord app running on this Mac. Discord shows the name and icon of the application whose ID you paste here, so create one named however you want your profile to read — no bot, no permissions and no sign-in needed, just the Application ID from its General Information page. Nothing is sent anywhere else, and the presence clears when playback stops.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
         }
         .formStyle(.grouped)
+    }
+
+    // MARK: - Discord status
+
+    private var discordStatusText: String {
+        switch DiscordRichPresenceService.shared.status {
+        case .disabled:
+            String(localized: "Off")
+        case .needsApplicationID:
+            String(localized: "Paste the Application ID of a Discord application you created.")
+        case .waitingForDiscord:
+            String(localized: "Waiting for Discord to be running on this Mac.")
+        case .connected:
+            String(localized: "Connected to Discord.")
+        case let .rejected(message):
+            String(localized: "Discord refused the connection: \(message)")
+        case let .failed(message):
+            String(localized: "Could not reach Discord: \(message)")
+        }
+    }
+
+    private var discordStatusIcon: String {
+        switch DiscordRichPresenceService.shared.status {
+        case .connected: "checkmark.circle.fill"
+        case .rejected, .failed: "exclamationmark.triangle.fill"
+        default: "clock"
+        }
+    }
+
+    private var discordStatusColor: Color {
+        switch DiscordRichPresenceService.shared.status {
+        case .connected: .green
+        case .rejected, .failed: .orange
+        default: .secondary
+        }
     }
 }
