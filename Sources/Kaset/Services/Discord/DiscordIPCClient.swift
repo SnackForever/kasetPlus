@@ -96,6 +96,17 @@ actor DiscordIPCClient {
         let descriptor = Darwin.socket(AF_UNIX, SOCK_STREAM, 0)
         guard descriptor >= 0 else { throw DiscordIPCError.connectionFailed(errno: errno) }
 
+        // Writing to a socket Discord already closed raises SIGPIPE, which
+        // would take the app down rather than surface as an error.
+        var noSignalPipe: Int32 = 1
+        _ = setsockopt(
+            descriptor,
+            SOL_SOCKET,
+            SO_NOSIGPIPE,
+            &noSignalPipe,
+            socklen_t(MemoryLayout<Int32>.size)
+        )
+
         var address = sockaddr_un()
         address.sun_family = sa_family_t(AF_UNIX)
         let capacity = MemoryLayout.size(ofValue: address.sun_path)
@@ -126,6 +137,14 @@ actor DiscordIPCClient {
     // MARK: - Activity
 
     func setActivity(_ activity: [String: Any]?, processID: Int32) throws {
+        // Discord answers every command with a frame. Nothing here consumes
+        // those answers, so they queue in the socket's receive buffer, and a
+        // full buffer stops Discord from reading our frames: measured, the
+        // queue saturates at ~8 KB and every later update is written into a
+        // connection that no longer listens, with `write` still reporting
+        // success. Drain before writing so the buffer never fills.
+        try self.drainPendingResponses()
+
         var arguments: [String: Any] = ["pid": Int(processID)]
         // A nil activity clears the presence; Discord expects the key omitted.
         if let activity { arguments["activity"] = activity }
@@ -137,6 +156,36 @@ actor DiscordIPCClient {
                 "nonce": UUID().uuidString,
             ]
         )
+    }
+
+    /// Discards whatever Discord has already answered, without blocking.
+    private func drainPendingResponses() throws {
+        guard let descriptor else { throw DiscordIPCError.connectionClosed }
+        guard case .closed = Self.drain(descriptor: descriptor) else { return }
+        // Discord quit or dropped us: fail now so the service reconnects
+        // instead of writing into a dead socket.
+        self.disconnect()
+        throw DiscordIPCError.connectionClosed
+    }
+
+    enum DrainResult: Equatable {
+        case open
+        case closed
+    }
+
+    /// Reads and discards every buffered byte. `MSG_DONTWAIT` keeps this a
+    /// non-blocking peek at what has already arrived, so a silent Discord never
+    /// stalls the caller.
+    static func drain(descriptor: Int32) -> DrainResult {
+        var buffer = [UInt8](repeating: 0, count: 4096)
+        while true {
+            let read = buffer.withUnsafeMutableBytes { pointer in
+                recv(descriptor, pointer.baseAddress, pointer.count, MSG_DONTWAIT)
+            }
+            if read > 0 { continue }
+            if read == 0 { return .closed }
+            return errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR ? .open : .closed
+        }
     }
 
     // MARK: - Framing

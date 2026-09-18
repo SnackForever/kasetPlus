@@ -66,6 +66,17 @@ Two things had to be verified before committing to this:
    either — only an invitation to misconfigure.
 5. Music publishes as activity type 2 ("Listening to"), video as type 3
    ("Watching"), matching what each source actually is.
+6. **Drain the socket before every command.** Discord answers each command with
+   a frame, and the client sends without reading. Measured against a running
+   Discord: unread answers queue in the receive buffer, saturate it at ~8 KB —
+   roughly fifty commands, or a dozen with a real activity echoed back — and
+   from then on Discord stops reading our frames while `write` keeps reporting
+   success, so the presence silently freezes on whatever it last showed. A
+   non-blocking drain before each command keeps the queue at one answer, and a
+   closed peer found there fails the write so the service reconnects.
+7. **A paused track says so on the state line.** Dropping the timestamps only
+   removes the progress bar, and `small_text` is the tooltip of a `small_image`
+   this application does not ship, so neither is visible as a pause.
 
 ## Consequences
 

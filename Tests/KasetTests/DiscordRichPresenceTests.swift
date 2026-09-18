@@ -43,6 +43,40 @@ struct DiscordRichPresenceTests {
         #expect(DiscordIPCClient.decodeHeader(Data([0, 0, 0, 0])) == nil)
     }
 
+    /// Discord answers every command, and an undrained receive buffer stops it
+    /// from reading ours: measured against a live Discord, the queue saturates
+    /// at ~8 KB and every later presence update goes into a connection that no
+    /// longer listens, with `write` still reporting success.
+    @Test("Draining empties a backed-up receive buffer without blocking")
+    func drainEmptiesTheReceiveBuffer() throws {
+        var descriptors: [Int32] = [0, 0]
+        #expect(socketpair(AF_UNIX, SOCK_STREAM, 0, &descriptors) == 0)
+        let (ours, discord) = (descriptors[0], descriptors[1])
+        defer { close(ours); close(discord) }
+
+        // More than one read's worth, so the drain loop has to iterate.
+        let responses = [UInt8](repeating: 0x7B, count: 6000)
+        #expect(responses.withUnsafeBytes { write(discord, $0.baseAddress, $0.count) } == 6000)
+
+        #expect(DiscordIPCClient.drain(descriptor: ours) == .open)
+
+        var leftover: UInt8 = 0
+        #expect(recv(ours, &leftover, 1, MSG_DONTWAIT) == -1)
+        #expect(errno == EAGAIN || errno == EWOULDBLOCK)
+    }
+
+    @Test("Draining reports a closed peer instead of swallowing it")
+    func drainReportsAClosedPeer() {
+        var descriptors: [Int32] = [0, 0]
+        #expect(socketpair(AF_UNIX, SOCK_STREAM, 0, &descriptors) == 0)
+        let (ours, discord) = (descriptors[0], descriptors[1])
+        defer { close(ours) }
+
+        close(discord)
+
+        #expect(DiscordIPCClient.drain(descriptor: ours) == .closed)
+    }
+
     @Test("Socket candidates cover Discord's ten IPC slots in the user temp dir")
     func socketCandidates() {
         let paths = DiscordIPCClient.socketPaths()
@@ -97,6 +131,27 @@ struct DiscordRichPresenceTests {
         let payload = DiscordPresenceActivity.payload(for: Self.snapshot(isPlaying: false))
 
         #expect(payload["timestamps"] == nil)
+    }
+
+    @Test("A paused track says so on the state line, keeping the artist")
+    func pausedStateLineIsVisible() throws {
+        let paused = DiscordPresenceActivity.payload(for: Self.snapshot(isPlaying: false))
+        let playing = DiscordPresenceActivity.payload(for: Self.snapshot())
+        let state = try #require(paused["state"] as? String)
+
+        #expect(state.contains(DiscordPresenceActivity.pausedLabel))
+        #expect(state.contains("An Artist"))
+        #expect(playing["state"] as? String == "An Artist")
+    }
+
+    @Test("A paused track with no artist still says it is paused")
+    func pausedWithoutArtistStillReportsPause() throws {
+        let payload = DiscordPresenceActivity.payload(
+            for: Self.snapshot(artist: nil, isPlaying: false)
+        )
+        let state = try #require(payload["state"] as? String)
+
+        #expect(state.contains(DiscordPresenceActivity.pausedLabel))
     }
 
     @Test("A track with unknown duration gets a start but no end")

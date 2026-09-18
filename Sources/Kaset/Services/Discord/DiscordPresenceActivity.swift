@@ -42,7 +42,7 @@ enum DiscordPresenceActivity {
         if let details = Self.clamped(snapshot.title) {
             activity["details"] = details
         }
-        if let state = snapshot.artist.flatMap(Self.clamped) {
+        if let state = Self.stateLine(for: snapshot) {
             activity["state"] = state
         }
 
@@ -65,13 +65,29 @@ enum DiscordPresenceActivity {
             assets["large_text"] = large
         }
         if !snapshot.isPlaying {
-            assets["small_text"] = String(localized: "Paused", comment: "Discord presence hover text")
+            assets["small_text"] = Self.pausedLabel
         }
         if !assets.isEmpty {
             activity["assets"] = assets
         }
 
         return activity
+    }
+
+    static var pausedLabel: String {
+        String(localized: "Paused", comment: "Discord presence hover text")
+    }
+
+    /// The activity's second line: the artist, and the pause itself when
+    /// playback is paused. Dropping the timestamps only takes the progress bar
+    /// away, and `small_text` is merely the tooltip of a `small_image` this
+    /// application does not ship — so the state line is the one place a paused
+    /// track can actually say it is paused.
+    static func stateLine(for snapshot: DiscordPresenceSnapshot) -> String? {
+        let artist = snapshot.artist?.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !snapshot.isPlaying else { return artist.flatMap(Self.clamped) }
+        guard let artist, !artist.isEmpty else { return Self.clamped("⏸️ \(Self.pausedLabel)") }
+        return Self.clamped("⏸️ \(Self.pausedLabel) · \(artist)")
     }
 
     /// Trims to Discord's byte window, padding a too-short value rather than
