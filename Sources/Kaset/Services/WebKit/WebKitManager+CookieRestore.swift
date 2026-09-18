@@ -110,14 +110,23 @@ extension WebKitManager {
         case let .data(archiveData):
             // The persisted archive is the source of truth for login-session
             // state. Preserve unrelated Google/YouTube preference cookies.
+            let liveLoginCookies = existingCookies.filter(KeychainCookieStorage.isLoginSessionCookie)
             guard await self.clearLiveLoginSessionCookies(
                 expectedGeneration: expectedGeneration
             ) else { return .failed }
-            let didRestore = await self.restoreArchivedAuthCookies(
+            if await self.restoreArchivedAuthCookies(
                 archiveData,
                 expectedGeneration: expectedGeneration
-            )
-            return didRestore ? .ready : .failed
+            ) {
+                return .ready
+            }
+            // An unusable archive must not cost a working login. Roll the live
+            // session back instead of quarantining it; the next backup
+            // overwrites the archive with a good snapshot.
+            return await self.rollBackLiveLoginSessionCookies(
+                liveLoginCookies,
+                expectedGeneration: expectedGeneration
+            ) ? .ready : .failed
         }
     }
 
@@ -128,17 +137,11 @@ extension WebKitManager {
         let keychainCookies = KeychainCookieStorage.decodeCookies(from: archiveData)
         guard !keychainCookies.isEmpty else {
             self.logger.error("Cookie archive contained no restorable authentication cookies")
-            _ = await self.quarantineFailedAuthCookieRestore(
-                expectedGeneration: expectedGeneration
-            )
             return false
         }
         let expectedState = CookieArchiveVerificationState.make(from: keychainCookies)
         guard case .snapshot = expectedState else {
             self.logger.error("Cookie archive could not produce a verifiable authentication snapshot")
-            _ = await self.quarantineFailedAuthCookieRestore(
-                expectedGeneration: expectedGeneration
-            )
             return false
         }
         let expectedPrimarySession = keychainCookies.contains { cookie in
@@ -147,9 +150,6 @@ extension WebKitManager {
         }
         guard expectedPrimarySession else {
             self.logger.error("Cookie archive does not contain a primary authentication cookie")
-            _ = await self.quarantineFailedAuthCookieRestore(
-                expectedGeneration: expectedGeneration
-            )
             return false
         }
 
@@ -170,13 +170,28 @@ extension WebKitManager {
         let didRestore = restoredState.matches(expectedState)
         guard didRestore else {
             self.logger.error("✗ Failed to restore auth cookies - Keychain data may be corrupted")
-            _ = await self.quarantineFailedAuthCookieRestore(
-                expectedGeneration: expectedGeneration
-            )
             return false
         }
         self.logger.info("✓ Auth cookies restored from Keychain (\(cookies.count) total cookies)")
 
+        return true
+    }
+
+    /// Puts the pre-restore login session back after an unusable archive.
+    /// Returns whether a primary session is live again.
+    private func rollBackLiveLoginSessionCookies(
+        _ cookies: [HTTPCookie],
+        expectedGeneration: UInt64
+    ) async -> Bool {
+        guard cookies.contains(where: { KeychainCookieStorage.isValidAuthCookie($0) }) else { return false }
+        guard await self.clearLiveLoginSessionCookies(
+            expectedGeneration: expectedGeneration
+        ) else { return false }
+        for cookie in cookies {
+            guard self.canContinueAuthCookieOperation(expectedGeneration: expectedGeneration) else { return false }
+            await self.dataStore.httpCookieStore.setCookie(cookie)
+        }
+        self.logger.info("Rolled back to the live login session after an unusable cookie archive")
         return true
     }
 

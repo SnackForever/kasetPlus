@@ -176,8 +176,8 @@ struct WebKitCookieRestoreTests {
         #expect(!cookies.contains { $0.name == "SAPISID" })
     }
 
-    @Test("Invalid archive is quarantined through startup restoration")
-    func invalidArchiveIsQuarantinedThroughRestoreEntryPoint() async throws {
+    @Test("Invalid archive rolls back to the live session instead of quarantining it")
+    func invalidArchiveRollsBackToTheLiveSession() async throws {
         let webKitManager = WebKitManager.makeTestInstance()
         let generation = await webKitManager.cookieArchiveQueue.reserveGeneration()
         #expect(await webKitManager.cookieArchiveQueue.save(
@@ -205,9 +205,9 @@ struct WebKitCookieRestoreTests {
         let cookies = await webKitManager.dataStore.httpCookieStore.allCookies()
         _ = await webKitManager.clearAllData()
 
-        #expect(result == .failed)
-        #expect(CookieArchiveRestorePolicy.generation > restorePolicyGeneration)
-        #expect(!cookies.contains { $0.name == "SAPISID" })
+        #expect(result == .ready)
+        #expect(CookieArchiveRestorePolicy.generation == restorePolicyGeneration)
+        #expect(cookies.first { $0.name == "SAPISID" }?.value == "mock-live-primary-session")
         #expect(cookies.first { $0.name == "PREF" }?.value == "mock-preference")
     }
 

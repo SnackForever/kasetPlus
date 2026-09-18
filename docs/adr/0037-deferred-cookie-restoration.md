@@ -51,6 +51,12 @@ the task that performs cleanup and account loading. A newly presented cleanup
 sheet captures the last login attempt's identity so Retry retains ownership
 after cancellation releases the active attempt.
 
+An unusable archive no longer quarantines the session. Restoration keeps the
+pre-restore login cookies and puts them back when the archive cannot be decoded,
+verified, or applied, so a corrupt archive costs at most one backup cycle instead
+of the live login and the restore policy. Only a rollback with no valid live
+session left reports `failed` and requires the cleanup flow.
+
 ## Consequences
 
 Temporary storage failures keep a recoverable session intact across repeated
