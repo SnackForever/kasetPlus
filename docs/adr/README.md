@@ -73,3 +73,4 @@ What becomes easier or more difficult because of this change?
 | [0036](0036-music-audio-output-continuity.md) | Music audio output continuity | Accepted |
 | [0037](0037-deferred-cookie-restoration.md) | Deferred cookie restoration | Accepted |
 | [0038](0038-discord-rich-presence.md) | Native Discord Rich Presence over the local IPC socket | Accepted |
+| [0039](0039-player-response-ad-pruning.md) | Prune ad scheduling where the player response is parsed | Accepted |

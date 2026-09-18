@@ -1372,10 +1372,14 @@ final class SingletonPlayerWebView {
         self.pendingDocumentID = documentID
 
         // Ad-block: prune ad entries from the player response before YouTube
-        // Music's JS reads them, so audio ads between songs never load. Same
-        // in-place `ytInitialPlayerResponse` trap used on the YouTube watch
-        // page; the DOM backstop's Skip selectors simply no-op on YTM. Gated on
-        // the shared Ad Blocker setting and injected first at document start.
+        // Music's JS reads them, so audio ads between songs never load. YTM
+        // ships no inline `ytInitialPlayerResponse`, so the pruning that
+        // matters here is the JSON.parse hook: every track — including the
+        // first — arrives as a fetched `youtubei/v1/player` payload, and the
+        // SPA router keeps one document for the whole session, so the hook
+        // installed at document start covers every later track too. The DOM
+        // backstop's Skip selectors simply no-op on YTM. Gated on the shared Ad
+        // Blocker setting and injected first at document start.
         if SettingsManager.shared.adBlockEnabled {
             let adBlock = WKUserScript(
                 source: AdBlockService.adBlockScript,

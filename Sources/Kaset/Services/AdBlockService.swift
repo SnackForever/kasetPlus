@@ -100,12 +100,18 @@ enum AdBlockService {
 
     // MARK: - YouTube Ad Auto-Skip Script
 
-    /// JS injected into YouTube watch pages at document-start, in the page's
-    /// main world (the legacy `WKUserScript` init injects there), before
-    /// YouTube's own scripts run — only when ad blocking is enabled.
+    /// JS injected into YouTube and YouTube Music playback pages at
+    /// document-start, in the page's main world (the legacy `WKUserScript` init
+    /// injects there), before the page's own scripts run — only when ad
+    /// blocking is enabled.
     ///
     /// Strips YouTube's ad scheduling (`adPlacements`/`playerAds`/…) from the
-    /// player response. Earlier naive attempts broke playback because YouTube's
+    /// player response, on both paths it can arrive by: the inline
+    /// `ytInitialPlayerResponse` of a YouTube watch page, and the fetched
+    /// `youtubei/v1/player` payload, which is where YouTube Music delivers
+    /// *every* track — it ships no inline player response at all, so the inline
+    /// trap alone left YouTube Music completely unblocked.
+    /// Earlier naive attempts broke playback because YouTube's
     /// #1 anti-adblock check is `Function.prototype.toString` on our hooked
     /// natives: a patched `fetch`/`JSON.parse` whose source isn't `[native
     /// code]` is detected and the player is deliberately killed. So we install
@@ -145,11 +151,32 @@ enum AdBlockService {
                 return o;
             }
 
-            // ── Prune the inline ytInitialPlayerResponse (kills the pre/mid-roll
-            //    at the source on every full-page watch load). We deliberately do
-            //    NOT rewrite the fetched youtubei/v1/player response: rebuilding
-            //    that Response reliably blanks the player. Anything the refetch
-            //    still schedules is handled by the DOM backstop below. ──
+            // ── Prune the player response where it is actually parsed.
+            //    Measured on music.youtube.com: the page ships NO inline
+            //    ytInitialPlayerResponse at all, and every track (the first one
+            //    included) arrives as fetch → Response.text() → JSON.parse of a
+            //    ~600 KB payload carrying adPlacements/playerAds/adSlots. The
+            //    same path serves YouTube's SPA refetches. So hook JSON.parse
+            //    and prune the parsed object IN PLACE, handing back the very
+            //    object the parser produced: no Response is rebuilt (measured to
+            //    blank the player) and no object identity changes. ──
+            var _parse = JSON.parse;
+            function hasAdKeys(o) {
+                for (var i = 0; i < AD_KEYS.length; i++) { if (AD_KEYS[i] in o) return true; }
+                return !!(o.playerResponse && typeof o.playerResponse === 'object');
+            }
+            var parseHook = function parse(text, reviver) {
+                var out = _parse(text, reviver);
+                try {
+                    if (out && typeof out === 'object' && hasAdKeys(out)) { pruneObject(out); }
+                } catch (e) {}
+                return out;
+            };
+            mask(parseHook, _parse);
+            try { JSON.parse = parseHook; } catch (e) {}
+
+            // ── Prune the inline ytInitialPlayerResponse too (the YouTube watch
+            //    page does ship one, and it is read before any fetch). ──
             var _ipr;
             try {
                 Object.defineProperty(window, 'ytInitialPlayerResponse', {
