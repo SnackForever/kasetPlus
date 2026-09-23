@@ -6,7 +6,10 @@ import SwiftUI
 
 /// Player bar shown at the bottom of the content area, styled like Apple Music with Liquid Glass.
 struct PlayerBar: View { // swiftlint:disable:this type_body_length
-    @MainActor private static var brandAccent: Color { SettingsManager.shared.accentColor }
+    @MainActor private static var brandAccent: Color {
+        SettingsManager.shared.accentColor
+    }
+
     private static let fullSongInfoWidth: CGFloat = 234
     private static let compactSongInfoWidth: CGFloat = 116
 
