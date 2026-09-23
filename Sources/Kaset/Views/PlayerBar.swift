@@ -1298,6 +1298,7 @@ private struct PlayerBarMixTracksMenu: View {
     let canSeek: Bool
 
     @Environment(PlayerService.self) private var playerService
+    @State private var seekHold = PlayerBarSeekHold()
 
     var body: some View {
         let currentSegmentID = self.currentProgressSegment?.id
@@ -1324,19 +1325,26 @@ private struct PlayerBarMixTracksMenu: View {
                 .frame(width: 16, height: 16)
                 .foregroundStyle(.primary)
         }
+        .onChange(of: self.playerService.progress) { _, newValue in
+            self.seekHold.reconcile(observedProgress: newValue)
+        }
     }
 
     private var currentProgressSegment: PlayerBarProgressSegment? {
         guard self.playerService.duration > 0 else { return nil }
-        let fraction = min(max(0, self.playerService.progress / self.playerService.duration), 1)
+        let progress = self.seekHold.displayProgress(observedProgress: self.playerService.progress)
+        let fraction = min(max(0, progress / self.playerService.duration), 1)
         return PlayerBarProgressLane.segment(at: fraction, in: self.segments)
     }
 
     private func seek(to segment: PlayerBarProgressSegment) {
         guard self.canSeek else { return }
         let seekTime = segment.start * self.playerService.duration
+        let holdID = self.seekHold.begin(target: seekTime)
         Task {
             await self.playerService.seek(to: seekTime)
+            try? await Task.sleep(for: PlayerBarSeekHold.timeout)
+            self.seekHold.clearIfCurrent(holdID)
         }
     }
 }

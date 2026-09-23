@@ -763,7 +763,7 @@ extension SingletonPlayerWebView {
                     mutationTimeout = setTimeout(() => {
                         mutationTimeout = null;
                         sendUpdate();
-                    }, 100);
+                    }, 200);
                 });
                 observer.observe(playerBar, {
                     attributes: true, characterData: true,
@@ -997,16 +997,21 @@ extension SingletonPlayerWebView {
                     let hasVideo = cachedHasVideo;
                     if (trackChanged || (now - lastHasVideoCheckTime >= HAS_VIDEO_CHECK_INTERVAL_MS)) {
                         lastHasVideoCheckTime = now;
-                        hasVideo = false;
+                        let domHasVideo = false;
                         const toggleButtons = document.querySelectorAll('tp-yt-paper-button, button, [role="button"]');
                         for (const btn of toggleButtons) {
                             const text = (btn.textContent || btn.innerText || '').trim().toLowerCase();
                             if (text === 'video' || text === 'song') {
-                                hasVideo = true;
+                                domHasVideo = true;
                                 break;
                             }
                         }
-                        cachedHasVideo = hasVideo;
+                        if (trackChanged) {
+                            cachedHasVideo = domHasVideo;
+                        } else if (domHasVideo) {
+                            cachedHasVideo = true;
+                        }
+                        hasVideo = cachedHasVideo;
                     }
 
                     bridge.postMessage({

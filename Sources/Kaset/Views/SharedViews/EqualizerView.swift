@@ -23,11 +23,15 @@ struct EqualizerView: View {
     /// Bar color.
     var color: Color = .red
 
+    private var shouldAnimate: Bool {
+        self.isAnimating && WindowOcclusionMonitor.shared.isMainWindowVisible
+    }
+
     var body: some View {
         HStack(spacing: self.spacing) {
             ForEach(0 ..< self.barCount, id: \.self) { index in
                 EqualizerBar(
-                    isAnimating: self.isAnimating,
+                    isAnimating: self.shouldAnimate,
                     barIndex: index,
                     barWidth: self.barWidth,
                     cornerRadius: self.cornerRadius,
@@ -40,7 +44,7 @@ struct EqualizerView: View {
 
 // MARK: - EqualizerBar
 
-/// A single animated bar in the equalizer.
+/// A single animated bar in the equalizer, rendered via GPU transform.
 private struct EqualizerBar: View {
     let isAnimating: Bool
     let barIndex: Int

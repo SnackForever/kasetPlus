@@ -21,7 +21,7 @@ struct PlayerBarMarqueeText: View {
     private let descenderAllowance: CGFloat = 3
 
     private var needsMarquee: Bool {
-        !self.reduceMotion && self.effectiveTextWidth > self.containerWidth + 1
+        !self.reduceMotion && self.effectiveTextWidth > self.containerWidth + 1 && WindowOcclusionMonitor.shared.isMainWindowVisible
     }
 
     var body: some View {
@@ -123,6 +123,7 @@ struct PlayerBarMarqueeText: View {
             "\(Int(self.containerWidth.rounded()))",
             "\(Int(self.effectiveTextWidth.rounded()))",
             "\(self.reduceMotion)",
+            "\(WindowOcclusionMonitor.shared.isMainWindowVisible)",
         ].joined(separator: "|")
     }
 
