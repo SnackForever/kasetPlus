@@ -85,9 +85,9 @@ private struct EqualizerBar: View {
     var body: some View {
         RoundedRectangle(cornerRadius: self.cornerRadius)
             .fill(self.color)
-            .frame(width: self.barWidth, maxHeight: .infinity, alignment: .bottom)
-            .scaleEffect(y: self.heightFraction, anchor: .bottom)
             .frame(width: self.barWidth)
+            .frame(maxHeight: .infinity, alignment: .bottom)
+            .scaleEffect(y: self.heightFraction, anchor: .bottom)
             .onAppear {
                 self.startAnimation()
             }
