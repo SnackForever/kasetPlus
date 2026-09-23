@@ -34,6 +34,7 @@ struct PlayerBarMarqueeText: View {
                 }
             }
             .fixedSize(horizontal: true, vertical: false)
+            .compositingGroup()
             .offset(x: self.needsMarquee ? self.offset : 0)
             .frame(width: proxy.size.width, height: self.renderHeight, alignment: .leading)
             .clipped()
