@@ -80,28 +80,32 @@ private struct EqualizerBar: View {
     }
 
     @State private var heightFraction: CGFloat = 0.3
+    @State private var animationTask: Task<Void, Never>?
 
     var body: some View {
-        GeometryReader { geometry in
-            RoundedRectangle(cornerRadius: self.cornerRadius)
-                .fill(self.color)
-                .frame(width: self.barWidth, height: geometry.size.height * self.heightFraction)
-                .frame(maxHeight: .infinity, alignment: .bottom)
-        }
-        .frame(width: self.barWidth)
-        .onAppear {
-            self.startAnimation()
-        }
-        .onChange(of: self.isAnimating) { _, newValue in
-            if newValue {
+        RoundedRectangle(cornerRadius: self.cornerRadius)
+            .fill(self.color)
+            .frame(width: self.barWidth, maxHeight: .infinity, alignment: .bottom)
+            .scaleEffect(y: self.heightFraction, anchor: .bottom)
+            .frame(width: self.barWidth)
+            .onAppear {
                 self.startAnimation()
-            } else {
+            }
+            .onDisappear {
                 self.stopAnimation()
             }
-        }
+            .onChange(of: self.isAnimating) { _, newValue in
+                if newValue {
+                    self.startAnimation()
+                } else {
+                    self.stopAnimation()
+                }
+            }
     }
 
     private func startAnimation() {
+        self.animationTask?.cancel()
+
         guard self.isAnimating else {
             self.heightFraction = self.minHeight
             return
@@ -113,9 +117,9 @@ private struct EqualizerBar: View {
         }
 
         // Initial delay for staggered start
-        Task { @MainActor in
+        self.animationTask = Task { @MainActor in
             try? await Task.sleep(for: .seconds(self.animationDelay))
-            guard self.isAnimating else { return }
+            guard !Task.isCancelled, self.isAnimating else { return }
             withAnimation(
                 .easeInOut(duration: self.animationDuration)
                     .repeatForever(autoreverses: true)
@@ -126,6 +130,8 @@ private struct EqualizerBar: View {
     }
 
     private func stopAnimation() {
+        self.animationTask?.cancel()
+        self.animationTask = nil
         withAnimation(.easeOut(duration: 0.3)) {
             self.heightFraction = self.minHeight
         }

@@ -246,6 +246,9 @@ extension SingletonPlayerWebView {
             let trailingUpdateTimeoutId = null;
             let lastAirPlayVideo;
             let lastAirPlayConnected;
+            let cachedHasVideo = false;
+            let lastHasVideoCheckTime = 0;
+            const HAS_VIDEO_CHECK_INTERVAL_MS = 5000;
             const UPDATE_THROTTLE_MS = 500; // Throttle updates to max 2/sec
             const POLL_INTERVAL_MS = 1000; // Poll at 1Hz during playback (reduced from 250ms)
             const TRACK_ENDED_IDENTITY_RETRY_INTERVAL_MS = 100;
@@ -991,16 +994,19 @@ extension SingletonPlayerWebView {
                     // This is a quick DOM check for initial detection.
                     // The API-based musicVideoType detection in fetchSongMetadata
                     // will provide the authoritative value once metadata is loaded.
-                    let hasVideo = false;
-
-                    // Quick check: Look for Song/Video toggle buttons
-                    const toggleButtons = document.querySelectorAll('tp-yt-paper-button, button, [role="button"]');
-                    for (const btn of toggleButtons) {
-                        const text = (btn.textContent || btn.innerText || '').trim().toLowerCase();
-                        if (text === 'video' || text === 'song') {
-                            hasVideo = true;
-                            break;
+                    let hasVideo = cachedHasVideo;
+                    if (trackChanged || (now - lastHasVideoCheckTime >= HAS_VIDEO_CHECK_INTERVAL_MS)) {
+                        lastHasVideoCheckTime = now;
+                        hasVideo = false;
+                        const toggleButtons = document.querySelectorAll('tp-yt-paper-button, button, [role="button"]');
+                        for (const btn of toggleButtons) {
+                            const text = (btn.textContent || btn.innerText || '').trim().toLowerCase();
+                            if (text === 'video' || text === 'song') {
+                                hasVideo = true;
+                                break;
+                            }
                         }
+                        cachedHasVideo = hasVideo;
                     }
 
                     bridge.postMessage({
